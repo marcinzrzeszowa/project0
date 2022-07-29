@@ -17,4 +17,8 @@ public class ArticleService {
     public List<Article> getArticles( ){
         return articleRepository.findAll();
     }
+
+    public void addArticle(Article article) {
+        System.out.println(article);
+    }
 }
