@@ -1,5 +1,7 @@
 package pl.projectarea.project0.article;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,15 +10,16 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Podaj opis")
     private String shortDescription;
+    @NotBlank(message = "Napisz treść")
     private String Description;
+    @NotBlank(message = "Podaj lokalizację pliku")
     private String imageSource;
     private LocalDateTime localDate;
 
-
     public Article() {
     }
-
     public Article(String shortDescription, String description, String imageSource) {
         this.shortDescription = shortDescription;
         this.Description = description;
