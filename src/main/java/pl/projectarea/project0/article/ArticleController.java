@@ -7,7 +7,6 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/articles")
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -17,12 +16,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping
+    @GetMapping("/articles")
     public List<Article> showArticles( ){
         return articleService.getArticles();
     }
 
-    @PostMapping
+    @PostMapping(value = "/articles", consumes = {"application/json"})
     public void addArticle(@RequestBody Article article){
         articleService.addArticle(article);
     }

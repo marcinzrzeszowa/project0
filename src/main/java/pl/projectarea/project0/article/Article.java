@@ -1,6 +1,4 @@
 package pl.projectarea.project0.article;
-
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,17 +10,18 @@ public class Article {
     private int id;
     private String shortDescription;
     private String Description;
-    private LocalDateTime localDate;
     private String imageSource;
+    private LocalDateTime localDate;
+
 
     public Article() {
     }
 
-    public Article(String shortDescription, String description, LocalDateTime localDate, String imageSource) {
+    public Article(String shortDescription, String description, String imageSource) {
         this.shortDescription = shortDescription;
         this.Description = description;
-        this.localDate = localDate;
         this.imageSource = imageSource;
+        this.localDate = LocalDateTime.now();
     }
 
     public int getId() {
@@ -49,7 +48,6 @@ public class Article {
 
         this.localDate = localDate;
     }
-
     public void setDescription(String description) {
         Description = description;
     }
@@ -65,9 +63,10 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "id=" + id +
+                "id=" + id + '\'' +
                 ", shortDescription='" + shortDescription + '\'' +
                 ", Description='" + Description + '\'' +
+                ", localDate=" + localDate + '\'' +
                 ", imageSource='" + imageSource + '\'' +
                 '}';
     }

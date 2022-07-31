@@ -13,9 +13,9 @@ public class ArticleConfig {
     @Bean
     CommandLineRunner initArticles(ArticleRepository repository){
         return args -> {
-            Article a1 = new Article("artykuł1","Początki bywają bolesne", LocalDateTime.now(), "bol.jpg");
-            Article a2 = new Article("artykuł2","Artukół drugi", LocalDateTime.now(), "alejaja.jpg");
-            Article a3 = new Article("artykuł3","Temat trzeci", LocalDateTime.now(), "temat.jpg");
+            Article a1 = new Article("artykuł1","Początki bywają bolesne", "bol.jpg");
+            Article a2 = new Article("artykuł2","Artukół drugi", "alejaja.jpg");
+            Article a3 = new Article("artykuł3","Temat trzeci", "temat.jpg");
             repository.saveAll(List.of(a1,a2,a3));
         };
     }
