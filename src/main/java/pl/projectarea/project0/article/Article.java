@@ -19,6 +19,7 @@ public class Article {
     private LocalDateTime localDate;
 
     public Article() {
+        this.localDate = LocalDateTime.now();
     }
     public Article(String shortDescription, String description, String imageSource) {
         this.shortDescription = shortDescription;
