@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ArticleService {
 
@@ -19,13 +21,19 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
+    public Article getArticle(Integer id){
+        //Optional<Article>
+        return articleRepository.findById(id).orElseThrow(()->new RuntimeException("Artykuł nie istnieje"));
+    }
+
     public void addArticle(Article article) {
         if(!article.getDescription().isBlank() && !article.getShortDescription().isBlank() && !article.getImageSource().isBlank()){
 
             articleRepository.save(article);
         }
     }
-    public void deleteArticle(int id) {
+    public void deleteArticle(Integer id) {
+        //Optional<Article> article = articleRepository.findById(id).
     if (!articleRepository.existsById(id)){
         throw new IllegalStateException("Nie możesz usunąć nie istniejącego artykułu");
     }
@@ -33,7 +41,19 @@ public class ArticleService {
     }
 
     //@Transactional
-    public void updateArticle(int id) {
-        //TODO
+    public Article updateOrSaveArticle(Integer id, Article newArticle) {
+            Article article = articleRepository.findById(id)
+                    .map(element ->{
+                        element.setShortDescription(newArticle.getShortDescription());
+                        element.setDescription(newArticle.getDescription());
+                        element.setLocalDate(newArticle.getLocalDate());
+                        element.setImageSource(newArticle.getImageSource());
+                        return  articleRepository.save(element);
+                    }).orElseGet(()->{
+                        return articleRepository.save(newArticle);
+                    });
+            return article;
+
+            //ifPresentOrElse(System.out::println, ()-> System.out.println() "Nie może znaleść artykułu")
     }
 }

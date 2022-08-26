@@ -3,13 +3,12 @@ package pl.projectarea.project0.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.projectarea.project0.notification.PriceAlert;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 public class User implements UserDetails {
@@ -19,6 +18,8 @@ public class User implements UserDetails {
     private String username;
     private String password;  //zamienic na tablice
     private String role;
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PriceAlert>priceAlerts;
 
     public User() {
     }
@@ -35,6 +36,14 @@ public class User implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<PriceAlert> getPriceAlerts() {
+        return priceAlerts;
+    }
+
+    public void setPriceAlerts(List<PriceAlert> priceAlerts) {
+        this.priceAlerts = priceAlerts;
     }
 
     public void setUsername(String username) {

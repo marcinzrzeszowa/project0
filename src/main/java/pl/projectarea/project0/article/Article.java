@@ -1,34 +1,49 @@
 package pl.projectarea.project0.article;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "article")
 public class Article {
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
+
+    @Column(name = "short_description", length = 200)
     @NotBlank(message = "Podaj opis")
     private String shortDescription;
+
+    @Column(name = "description", length = 1000)
     @NotBlank(message = "Napisz treść")
     private String Description;
-    @NotBlank(message = "Podaj lokalizację pliku")
+
+    @Column(name = "image_source ")
     private String imageSource;
-    private LocalDateTime localDate;
+
+    @Column(name = "local_date")
+    private LocalDate localDate;
 
     public Article() {
-        this.localDate = LocalDateTime.now();
+
+        this.localDate = LocalDate.now();
     }
     public Article(String shortDescription, String description, String imageSource) {
         this.shortDescription = shortDescription;
         this.Description = description;
         this.imageSource = imageSource;
-        this.localDate = LocalDateTime.now();
+        this.localDate = LocalDate.now();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -44,11 +59,15 @@ public class Article {
         return Description;
     }
 
-    public LocalDateTime getLocalDate() {
-        return localDate;
+    public LocalDate getLocalDate() {
+
+        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String text = localDate.format(formatters);
+        LocalDate parsedDate = LocalDate.parse(text, formatters);
+        return parsedDate;
     }
 
-    public void setLocalDate(LocalDateTime localDate) {
+    public void setLocalDate(LocalDate localDate) {
 
         this.localDate = localDate;
     }
@@ -74,4 +93,19 @@ public class Article {
                 ", imageSource='" + imageSource + '\'' +
                 '}';
     }
+
+   /* @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+
+        return id == category.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }*/
+
 }
