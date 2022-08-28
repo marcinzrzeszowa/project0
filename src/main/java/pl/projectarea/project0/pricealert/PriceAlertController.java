@@ -1,4 +1,4 @@
-package pl.projectarea.project0.notification;
+package pl.projectarea.project0.pricealert;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

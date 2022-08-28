@@ -5,8 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import pl.projectarea.project0.article.Article;
 import pl.projectarea.project0.article.ArticleRepository;
-import pl.projectarea.project0.notification.PriceAlert;
-import pl.projectarea.project0.notification.PriceAlertRepository;
+import pl.projectarea.project0.pricealert.PriceAlert;
+import pl.projectarea.project0.pricealert.PriceAlertRepository;
 import pl.projectarea.project0.user.User;
 import pl.projectarea.project0.user.UserRepository;
 
@@ -31,6 +31,7 @@ class StartupData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         loadArticles();
         loadPriceAlerts();
+
     }
 
     private void loadArticles(){
@@ -47,9 +48,11 @@ class StartupData implements CommandLineRunner {
         BigDecimal minPrice = new BigDecimal(20000);
 
 
-        PriceAlert pa1 = new PriceAlert("BTC-USD","Cena poza zakresem "+ maxPrice +" - " + minPrice,maxPrice,minPrice,true, null);
-        PriceAlert pa2 = new PriceAlert("BTC-USD","Cena powyzej ceny "+ maxPrice,maxPrice,true, null);
-        PriceAlert pa3 = new PriceAlert("BTC-USD","Cena poniżej ceny "+ minPrice,true,minPrice, null);
+        PriceAlert pa1 = new PriceAlert("BTC-USD","Cena poza zakresem "+ maxPrice +" - " + minPrice,maxPrice,minPrice,true, null );
+        PriceAlert pa2 = new PriceAlert("BTC-USD","Cena powyzej ceny "+ maxPrice,maxPrice,true, null );
+        PriceAlert pa3 = new PriceAlert("BTC-USD","Cena poniżej ceny "+ minPrice,true,minPrice, null );
         priceAlertRepository.saveAll(List.of(pa1,pa2,pa3));
     }
+
+
 }

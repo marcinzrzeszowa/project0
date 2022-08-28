@@ -1,9 +1,9 @@
-package pl.projectarea.project0;
+package pl.projectarea.project0.stock.old;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import pl.projectarea.project0.stock.StockJson;
+import pl.projectarea.project0.stock.old.StockJson;
 
 import java.io.IOException;
 import java.net.URL;

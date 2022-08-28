@@ -1,9 +1,12 @@
-package pl.projectarea.project0.notification;
+package pl.projectarea.project0.pricealert;
 
 import pl.projectarea.project0.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 maxPrice >=0, minPrice = nie ustawione - Alert zostanie zgłoszony po wzroście ceny powyżej wartości maxPrice
@@ -24,15 +27,8 @@ public class PriceAlert {
     private Boolean isActive;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public PriceAlert() {
     }
@@ -43,7 +39,7 @@ public class PriceAlert {
         this.maxPrice = maxPrice;
         this.minPrice = minPrice;
         this.isActive = isActive;
-        this.user = user;
+        this.userId = user;
     }
 
     public PriceAlert(String ticker, String description, BigDecimal maxPrice, Boolean isActive, User user) {
@@ -97,4 +93,12 @@ public class PriceAlert {
     public void setActive(Boolean active) {
         isActive = active;
     }
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
 }
