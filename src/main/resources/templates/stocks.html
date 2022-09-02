@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<!--<head th:replace="fragments/header :: header-css">-->
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<h1>Wybierz kurs</h1>
+<div th:each="stock: ${stockList}">
+    <ul>
+        <a th:text= "${stock}"></a>
+    </ul>
+
+</div>
+
+
+ <!-- <div th:each="currency: ${currencies}">
+    <ul>
+      <a th:href="@{'/stocks/{ticker}'(ticker=${currency.getSimpleTicker()})}" th:text="${currency.getTicker()}" ></a>
+
+     <a th:href="@{'/cart/remove/{id}'(id=${product.getKey().getId()})}" class="col-md-1">
+        <button type="button" class="btn btn-primary" th:text="#{cart.remove}"></button>
+      </a>
+    </ul>
+  </div>-->
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

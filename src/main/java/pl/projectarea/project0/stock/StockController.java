@@ -5,35 +5,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import pl.projectarea.project0.stock.old.StockJson;
-import pl.projectarea.project0.stock.old.StockServiceOLD;
+import org.springframework.web.bind.annotation.RestController;
+
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class StockController {
 
-    private final StockServiceOLD stockService;
+    private final StockService stockService;
 
     @Autowired
-    public StockController(StockServiceOLD stockService) {
+    public StockController( StockService stockService ) {
         this.stockService = stockService;
     }
 
-    @GetMapping(value = {"/stock"})
+    @GetMapping(value = {"/stocksMap"})
+    public String getAvailableStocks(Model model){
+        model.addAttribute("stocksMap", stockService.loadAvailableStocks());
+        return "stocksMap";
+    }
+    @GetMapping (path = "/stocks/{ticker}")
+    public String getExchangeRate(@PathVariable("ticker") String ticker, Model model) throws IOException {
+        StockApiWrapper saw = stockService.findStock(ticker);
+        //BigDecimal price = stockService.findPrice(saw);
+        model.addAttribute("stockApiWrapper", saw);
+        return "show";
+    }
+   /* @GetMapping(value = {"/stock"})
     public String getExchangeRates(Model model)  throws IOException{
-        model.addAttribute("currencies", stockService.getCurrenciesList());
+        model.addAttribute("currencies", stockServiceOld.getCurrenciesList());
         return "stock";
     }
 
-    @GetMapping (path = "/stock/{ticker}")
-    public String getExchangeRate(@PathVariable("ticker") String ticker, Model model) throws IOException {
-        List<StockJson> currency = stockService.getExchangeRates(ticker);
-        model.addAttribute("currency", currency);
-        return "show";
+
     }
+*/
+  /* @GetMapping(value = {"/stock"})
+   public List<StockApiWrapper> getExchangeRates( )  throws IOException{
+       return stockService.findStocks();
+
+   }*/
+
 
 
 }
