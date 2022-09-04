@@ -17,7 +17,7 @@ public class PriceAlertController {
         this.priceAlertRepository = priceAlertRepository;
     }
 
-    @GetMapping(value = {"/alerts"})
+    @GetMapping(value = {"/alerts"}) //ok
     public List<PriceAlert> showAlerts() {
         return priceAlertRepository.findAll();
     }

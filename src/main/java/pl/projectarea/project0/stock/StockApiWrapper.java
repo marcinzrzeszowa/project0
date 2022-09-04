@@ -8,7 +8,6 @@ import java.util.List;
 public class StockApiWrapper {
     private final Stock stock;
     private LocalDateTime lastAccessed;
-    private static final List<String> tickersList = null;
 
     public Stock getStock() {
         return stock;

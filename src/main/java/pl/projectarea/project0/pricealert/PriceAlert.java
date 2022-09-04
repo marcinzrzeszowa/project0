@@ -29,10 +29,8 @@ public class PriceAlert {
     @JoinColumn(name = "user_id")
     private User userId;
 
-
     public PriceAlert() {
     }
-
     public PriceAlert(String ticker, String description, BigDecimal maxPrice, BigDecimal minPrice, Boolean isActive, User user) {
         this.ticker = ticker;
         this.description = description;

@@ -23,7 +23,7 @@ public class ArticleController {
         return "home";
     }
 
-    @GetMapping(value = {"/articles"})
+    @GetMapping(value = {"/articles"})  //ok
     public List<Article> showArticles() {
         return articleService.getArticles();
     }
