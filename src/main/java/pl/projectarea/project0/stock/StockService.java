@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 public class StockService {
 
     private final StockRefreshService refreshService;
+
+    //TODO availableTickersList zamienić na availableTickersMap
     private static final List<String> availableTickersList = Arrays.asList("BTC-USD","ETH-USD","DOT-USD","PLN=X","EURPLN=X","GBPPLN=X","CHFPLN=X","EUR=X","GC=F","SI=F","BZ=F","^GSPC");
     private static final Map<String,String> availableTickersMap = new HashMap<>();
     @Autowired
@@ -36,7 +38,6 @@ public class StockService {
         availableTickersMap.put("BZ=F","Ropa/USD");
         availableTickersMap.put("^GSPC","S&P500");
     }
-
     public StockApiWrapper findStock(final String ticker){
         try{
             return new StockApiWrapper(YahooFinance.get(ticker));
@@ -45,23 +46,22 @@ public class StockService {
         }
         return null;
     }
-
     //10 000 - 10sec
     //60 000 - 1min
     //300 000- 5min
     @Scheduled(fixedRate = 60000)
     public void Refresh() throws IOException {
 
-        List<StockApiWrapper> stockApiWrapperList = findStocks();
+     /*   List<StockApiWrapper> stockApiWrapperList = findStocks();
         for (StockApiWrapper saw: stockApiWrapperList){
             if(!saw.equals(null)){
                 Stock s = saw.getStock();
                 System.out.println(s.getName() +" = "+s.getQuote().getPrice());
             }
-        }
+        }*/
     }
 
-    public Map<String,String> loadAvailableStocks(){
+    public Map<String,String> loadAvailableStocksMap(){
         return availableTickersMap;
     }
 
@@ -86,5 +86,17 @@ public class StockService {
 
     public BigDecimal findChangeFrom200AvgInPercent(final StockApiWrapper stock) throws IOException{
         return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChangeFromAvg200InPercent();
+    }
+    public BigDecimal findPreviousClose(final StockApiWrapper stock) throws IOException{
+        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getPreviousClose();
+    }
+    public BigDecimal findGetChange(final StockApiWrapper stock) throws IOException{
+        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChange();
+    }
+    public BigDecimal findDayHigh(final StockApiWrapper stock) throws IOException{
+        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getDayHigh();
+    }
+    public BigDecimal findDayLow(final StockApiWrapper stock) throws IOException{
+        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getDayLow();
     }
 }

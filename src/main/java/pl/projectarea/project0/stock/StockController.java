@@ -24,15 +24,15 @@ public class StockController {
         this.stockService = stockService;
     }
 
-    @GetMapping(value = {"/stocksMap"})
+    @GetMapping(value = {"/stocks"})
     public String getAvailableStocks(Model model){
-        model.addAttribute("stocksMap", stockService.loadAvailableStocks());
-        return "stocksMap";
+        model.addAttribute("stocksList", stockService.loadAvailableStocksMap());
+        model.addAttribute("stocks", stockService.findStocks());
+        return "stocks";
     }
     @GetMapping (path = "/stocks/{ticker}")
     public String getExchangeRate(@PathVariable("ticker") String ticker, Model model) throws IOException {
         StockApiWrapper saw = stockService.findStock(ticker);
-        //BigDecimal price = stockService.findPrice(saw);
         model.addAttribute("stockApiWrapper", saw);
         return "show";
     }
@@ -50,7 +50,5 @@ public class StockController {
        return stockService.findStocks();
 
    }*/
-
-
 
 }

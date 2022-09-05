@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.projectarea.project0.pricealert.PriceAlert;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +19,7 @@ public class User implements UserDetails {
     private String username;
     private String password;  //zamienic na tablice
     private String role;
+    @Email
     private String email;
     @OneToMany(mappedBy= "userId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PriceAlert>priceAlerts;

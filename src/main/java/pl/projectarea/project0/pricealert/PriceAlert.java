@@ -41,17 +41,16 @@ public class PriceAlert {
     }
 
     public PriceAlert(String ticker, String description, BigDecimal maxPrice, Boolean isActive, User user) {
-        this(ticker,description,maxPrice,null,isActive,user);
+        this(ticker,description,maxPrice,BigDecimal.ZERO,isActive,user);
     }
 
     public PriceAlert(String ticker, String description, Boolean isActive, BigDecimal minPrice, User user) {
-        this(ticker,description,null,minPrice,isActive,user);
+        this(ticker,description,BigDecimal.ZERO,minPrice,isActive,user);
     }
 
     public int getId() {
         return id;
     }
-
     public String getTicker() {
         return ticker;
     }

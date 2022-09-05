@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header :: headerCss">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="center">
+    <table>
+        <tr>
+            <th>Lp</th>
+            <th>Symbol</th>
+            <th>Cena</th>
+            <th>Cena max</th>
+            <th>Cena min</th>
+            <th>Aktywny</th>
+            <th>Użytkownik</th>
+        </tr>
+        <tr th:each="alert: ${alert}">
+            <td th:text="${alert.getId()}"/>
+            <td th:text="${alert.getTicker()}"/>
+            <td th:text="${alert.getDescription()}"/>
+            <td th:text="${alert.getMaxPrice()}"/>
+            <td th:text="${alert.getMinPrice()}"/>
+            <td th:text="${alert.getActive()}"/>
+            <td th:text="${alert.getUserId()}"/>
+
+            <td><!--<a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> Dodaj</a>--></td>
+        </tr>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:fragment="headerCss">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+<div th:fragment="header">
+    <h1>ProjectArea.pl</h1>
+    <p>Projekty wykonane przez MJ <a href="https://github.com/marcinzrzeszowa">github</a></p>
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Start</a>
+            </li>
+            <li>
+                <a href="/stocks">Kurs walut</a>
+            </li>
+            <li>
+                <a href="/alerts">Alerty</a>
+            </li>
+            <li>
+                <a href="/login">Logowanie</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

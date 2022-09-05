@@ -1,24 +1,91 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-
-<!--<head th:replace="fragments/header :: header-css">-->
+<head th:replace="fragments/header :: headerCss">
 </head>
 
 <body>
 <div th:replace="fragments/header :: header"></div>
 
-<h1>Wybierz kurs</h1>
-<div th:each="stock: ${stockList}">
+<!--<h1>Wybierz kurs z Listy</h1>
+<div th:each="stockWrapper: ${stocks}">
     <ul>
-        <a th:text= "${stock}"></a>
+        <a th:href="@{'/stocks/{ticker}'(ticker=${stockWrapper})}" th:text="${stockWrapper}" ></a>
     </ul>
+</div>-->
 
+
+
+
+<!--
+<h1>Lista kurów walut</h1>
+<div th:each="stockWrapper: ${stocksList.entrySet()}">
+    <p>
+        <span th:text="${stockWrapper.getValue()}"></span>
+        <a th:href="@{'/stocks/{ticker}'(ticker=${stockWrapper.getKey()})}">rozwiń</a>
+    </p>
 </div>
+-->
+
+
+<!--<div th:each="stockElement: ${stocks}">
+  <p>
+            <h4 th:text="${stockElement.getName()}" />
+            <label th:text="'Symbol '+ ${stockElement.getSymbol()}" /> |
+            <label th:text="'Cena '+ ${stockElement.getPrice()}" /> |
+            <label th:text="'Cena wczoraj '+ ${stockElement.getPreviousClose()}" />
+             | Zmiana % <label th:text="${stockElement.getChangeInPercent() +' %'}" th:style="${stockElement.getChangeInPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
+             | Średnia 50AVG <label th:text="${stockElement.getChangeFromAvg50InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg50InPercent()  > 0 ? 'color: green;' : 'color: red;'}"/>
+            | Średnia 200AVG <label th:text="${stockElement.getChangeFromAvg200InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg200InPercent() > 0 ? 'color: green;' : 'color: red;'}"/> |
+
+             <a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> dodaj alert</a>
+  </p>
+</div>-->
+<div class="center">
+    <h2>Kursy giełdowe</h2>
+<table>
+    <tr>
+        <th>Nazwa</th>
+        <th>Symbol</th>
+        <th>Cena Aktualna</th>
+        <th>Cena Wczoraj D</th>
+        <th>Zmiana Ceny D</th>
+        <th>Średnia 50SMA</th>
+        <th>Średnia 200SMA</th>
+        <th>Alerty</th>
+    </tr>
+    <tr th:each="stockElement: ${stocks}">
+        <td th:text="${stockElement.getName()} ?: 'null'"/>
+        <td th:text="${stockElement.getSymbol()}"/>
+        <td th:text="${stockElement.getPrice()}"/>
+        <td th:text="${stockElement.getPreviousClose()}"/>
+        <td th:text="${stockElement.getChangeInPercent() +' %'}" th:style="${stockElement.getChangeInPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
+        <td th:text="${stockElement.getChangeFromAvg50InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg50InPercent()  > 0 ? 'color: green;' : 'color: red;'}"/>
+        <td th:text="${stockElement.getChangeFromAvg200InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg200InPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
+        <td><a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> Dodaj</a></td>
+    </tr>
+
+</table>
+</div>
+<!--You must give an ID to your element. Example: <div id="footer">Footer</div>. If you go to mypage.html#footer, the browser will get you there.-->
+
+<!--
+<div th:if="${!products.isEmpty()}" class="col-3">
+    <h2 th:text="#{cart.title}"></h2>
+    <div class="card" th:each="product : ${products.entrySet()}">
+        <h3 th:text="${product.getKey().getName()}"></h3>
+        <h4 th:text="${product.getValue()}"></h4>
+        <h4 th:text="${product.getKey().getPrice()}"></h4>
+        <a th:href="@{'/cart/remove/{id}'(id=${product.getKey().getId()})}" class="col-md-1">
+            <button type="button" class="btn btn-primary" th:text="#{cart.remove}"></button>
+        </a>
+        <br>
+    </div>
+-->
 
 
  <!-- <div th:each="currency: ${currencies}">
     <ul>
-      <a th:href="@{'/stocks/{ticker}'(ticker=${currency.getSimpleTicker()})}" th:text="${currency.getTicker()}" ></a>
+      <a th:href="@{'/currencies/{ticker}'(ticker=${currency.getSimpleTicker()})}" th:text="${currency.getTicker()}" ></a>
 
      <a th:href="@{'/cart/remove/{id}'(id=${product.getKey().getId()})}" class="col-md-1">
         <button type="button" class="btn btn-primary" th:text="#{cart.remove}"></button>
