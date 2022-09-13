@@ -3,7 +3,6 @@ package pl.projectarea.project0.stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;

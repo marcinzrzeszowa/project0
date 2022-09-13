@@ -13,10 +13,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "article")
 public class Article {
-    @Column(name = "id")
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "short_description", length = 200)
     @NotBlank(message = "Podaj opis")
@@ -26,9 +27,6 @@ public class Article {
     @NotBlank(message = "Napisz treść")
     private String Description;
 
-    @Column(name = "image_source ")
-    private String imageSource;
-
     @Column(name = "local_date")
     private LocalDate localDate;
 
@@ -36,14 +34,13 @@ public class Article {
 
         this.localDate = LocalDate.now();
     }
-    public Article(String shortDescription, String description, String imageSource) {
+    public Article(String shortDescription, String description) {
         this.shortDescription = shortDescription;
         this.Description = description;
-        this.imageSource = imageSource;
         this.localDate = LocalDate.now();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -75,13 +72,6 @@ public class Article {
         Description = description;
     }
 
-    public String getImageSource() {
-        return imageSource;
-    }
-
-    public void setImageSource(String imageSource) {
-        this.imageSource = imageSource;
-    }
 
     @Override
     public String toString() {
@@ -90,7 +80,6 @@ public class Article {
                 ", shortDescription='" + shortDescription + '\'' +
                 ", Description='" + Description + '\'' +
                 ", localDate=" + localDate + '\'' +
-                ", imageSource='" + imageSource + '\'' +
                 '}';
     }
 

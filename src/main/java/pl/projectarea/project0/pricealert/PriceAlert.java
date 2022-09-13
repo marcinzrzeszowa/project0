@@ -3,10 +3,9 @@ package pl.projectarea.project0.pricealert;
 import pl.projectarea.project0.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /*
 maxPrice >=0, minPrice = nie ustawione - Alert zostanie zgłoszony po wzroście ceny powyżej wartości maxPrice
@@ -19,15 +18,30 @@ maxPrice >=0, minPrice <=0 - Alert zostanie zgłoszony po wzroście ceny powyże
 public class PriceAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "ticker")
     private String ticker;
+
+    @Column(name = "description")
+    @NotNull
+    @NotEmpty
     private String description;
+
+    @Column(name = "max_price", length = 10000)
     private BigDecimal maxPrice;
+
+    @Column(name = "min_price", length = 10000)
     private BigDecimal minPrice;
+
+    @Column(name = "is_active")
     private Boolean isActive;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
-    private User userId;
+
+    //cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH}
+    @ManyToOne()
+    @JoinColumn(name = "user", referencedColumnName = "id")
+    private User user;
 
     public PriceAlert() {
     }
@@ -37,7 +51,7 @@ public class PriceAlert {
         this.maxPrice = maxPrice;
         this.minPrice = minPrice;
         this.isActive = isActive;
-        this.userId = user;
+        this.user = user;
     }
 
     public PriceAlert(String ticker, String description, BigDecimal maxPrice, Boolean isActive, User user) {
@@ -90,12 +104,12 @@ public class PriceAlert {
     public void setActive(Boolean active) {
         isActive = active;
     }
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

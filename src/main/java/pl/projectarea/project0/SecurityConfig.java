@@ -1,17 +1,11 @@
 package pl.projectarea.project0;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.projectarea.project0.user.User;
 import pl.projectarea.project0.user.UserRepository;
 import pl.projectarea.project0.user.UserService;
 
@@ -34,16 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.inMemoryAuthentication().withUser(new User("Jan",passwordEncoder().encode("123"), Collections.singleton(new SimpleGrantedAuthority("user"))));
-        auth.userDetailsService(userService) ;
+        auth.userDetailsService(userService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/articles").permitAll()
-                .antMatchers(HttpMethod.POST,"/articles").hasAnyRole(MODERATOR, ADMIN)
-                .antMatchers(HttpMethod.DELETE,"/articles").hasRole(ADMIN)
+                .antMatchers("/","/articles").permitAll()
+                //.antMatchers(HttpMethod.POST,"/articles").hasAnyRole(MODERATOR, ADMIN)
+                //.antMatchers(HttpMethod.DELETE,"/articles").hasRole(ADMIN)
                 .and()
                 .formLogin().permitAll()
                 .and().logout().permitAll()
@@ -51,17 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
 
-        return new BCryptPasswordEncoder();
-    }
 
-    @EventListener(ApplicationReadyEvent.class)
+  /*  @EventListener(ApplicationReadyEvent.class)
     public void initUser(){
         User user1 = new User("Jan",passwordEncoder().encode("123"),ROLE_MODERATOR, "marcinzbrzozowa@gmail.com");
         User user2 = new User("Admin",passwordEncoder().encode("123"),ROLE_ADMIN, "marcinzbrzozowa@gmail.com");
         userRepository.save(user1);
         userRepository.save(user2);
-    }
+    }*/
 }

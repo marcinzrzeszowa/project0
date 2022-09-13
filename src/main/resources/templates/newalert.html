@@ -6,7 +6,6 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div class="center">
-    <h2>Alerty</h2>
     <table>
         <tr>
             <th>Lp</th>
@@ -16,19 +15,32 @@
             <th>Cena min</th>
             <th>Aktywny</th>
             <th>Użytkownik</th>
-            <th>Edytuj</th>
         </tr>
-        <tr th:each="alert: ${alerts}">
+        <tr th:each="alert: ${alert}">
             <td th:text="${alert.getId()}"/>
             <td th:text="${alert.getTicker()}"/>
             <td th:text="${alert.getDescription()}"/>
             <td th:text="${alert.getMaxPrice() == 0 ? ' - ' : alert.getMaxPrice()}"/>
             <td th:text="${alert.getMinPrice() == 0 ? ' - ' : alert.getMinPrice()}"/>
-            <td th:text="${alert.getActive()}"/>
+            <td th:text="${alert.getActive() }"/>
             <td th:text="${alert.getUser().getUsername()}"/>
-            <td><a th:href="@{'/alerts/{id}'(id=${alert.getId()})}">Edytuj</a></td>
+            <td><!--<a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> Dodaj</a>--></td>
         </tr>
     </table>
+
+    <fieldset>
+        <legend>Nowy projekt</legend>
+    <form action="#" method="post" th:action="@{/newalert}" th:object="${alert}">
+        <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" class="c(red)"></p>
+            <label>Opis
+                <input type="text" th:field="*{description}"/>
+            </label>
+        <p>
+            <button type="submit">Dodaj</button>
+            <button type="reset">Wyczyść</button>
+        </p>
+    </form>
+    </fieldset>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

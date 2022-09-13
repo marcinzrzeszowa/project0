@@ -51,7 +51,7 @@
         <th>Zmiana Ceny D</th>
         <th>Średnia 50SMA</th>
         <th>Średnia 200SMA</th>
-        <th>Alerty</th>
+        <th>Szczegóły</th>
     </tr>
     <tr th:each="stockElement: ${stocks}">
         <td th:text="${stockElement.getName()} ?: 'null'"/>
@@ -61,7 +61,7 @@
         <td th:text="${stockElement.getChangeInPercent() +' %'}" th:style="${stockElement.getChangeInPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
         <td th:text="${stockElement.getChangeFromAvg50InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg50InPercent()  > 0 ? 'color: green;' : 'color: red;'}"/>
         <td th:text="${stockElement.getChangeFromAvg200InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg200InPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
-        <td><a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> Dodaj</a></td>
+        <td><a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> rozwiń</a></td>
     </tr>
 
 </table>

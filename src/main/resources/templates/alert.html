@@ -20,14 +20,15 @@
             <td th:text="${alert.getId()}"/>
             <td th:text="${alert.getTicker()}"/>
             <td th:text="${alert.getDescription()}"/>
-            <td th:text="${alert.getMaxPrice()}"/>
-            <td th:text="${alert.getMinPrice()}"/>
-            <td th:text="${alert.getActive()}"/>
-            <td th:text="${alert.getUserId()}"/>
-
+            <td th:text="${alert.getMaxPrice() == 0 ? ' - ' : alert.getMaxPrice()}"/>
+            <td th:text="${alert.getMinPrice() == 0 ? ' - ' : alert.getMinPrice()}"/>
+            <td th:text="${alert.getActive() }"/>
+            <td th:text="${alert.getUser().getUsername()}"/>
             <td><!--<a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> Dodaj</a>--></td>
         </tr>
     </table>
+
+
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

@@ -7,22 +7,25 @@ import pl.projectarea.project0.pricealert.PriceAlert;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+
     private String username;
+
     private String password;  //zamienic na tablice
+
     private String role;
+
     @Email
     private String email;
-    @OneToMany(mappedBy= "userId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PriceAlert>priceAlerts;
+
+    @OneToMany(mappedBy= "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PriceAlert> priceAlerts = new HashSet<>();
 
     public User() {
     }
@@ -32,11 +35,11 @@ public class User implements UserDetails {
         this.role = role;
         this.email = email;
     }
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -48,11 +51,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public List<PriceAlert> getPriceAlerts() {
+    public Set<PriceAlert> getPriceAlerts() {
         return priceAlerts;
     }
 
-    public void setPriceAlerts(List<PriceAlert> priceAlerts) {
+    public void setPriceAlerts(Set<PriceAlert> priceAlerts) {
         this.priceAlerts = priceAlerts;
     }
 

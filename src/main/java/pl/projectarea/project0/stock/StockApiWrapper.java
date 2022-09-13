@@ -41,9 +41,6 @@ public class StockApiWrapper {
         return getStock().getQuote().getChangeFromAvg50InPercent();
     }
 
-
-
-
     public LocalDateTime getLastAccessed() {
         return lastAccessed;
     }

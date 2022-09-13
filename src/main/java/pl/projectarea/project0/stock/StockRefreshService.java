@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class StockRefreshService {
 
-    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private final Map<StockApiWrapper, Boolean> stockToRefresh;
 
     public StockRefreshService( ) {
@@ -31,7 +31,7 @@ public class StockRefreshService {
 
     private void refreshPeriodInMinutes(int refreshPeriod){
         Duration refreshInMinutes = Duration.ofMinutes(refreshPeriod);
-        scheduler.scheduleAtFixedRate(()->
+        scheduler.scheduleWithFixedDelay(()->
                 stockToRefresh.forEach((stock, value) ->{
                     if(stock.getLastAccessed().isBefore(LocalDateTime.now().minus(refreshInMinutes))) {
                         System.out.println("Pobieranie aktualnego kursu waluty co "+ refreshPeriod +" minut: "+ stock.getStock().getSymbol());
