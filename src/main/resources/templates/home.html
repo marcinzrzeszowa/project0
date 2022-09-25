@@ -4,12 +4,14 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
+<a th:href="@{'/articles/new'}">Nowy Artykuł</a>
 
   <div th:each="article: ${articles}">
     <h4 th:text="${article.getShortDescription}"></h4>
     <p th:text="${article.getDescription}" />
     <p th:text="${article.getLocalDate}" />
     <a th:href="@{'/articles/edit/{id}'(id=${article.getId()})}">Edytuj</a>
+    <a th:href="@{'/articles/delete/{id}'(id=${article.getId()})}" id="delete" name="delete" th:method="delete">Usuń</a>
   </div>
 
 <div th:replace="fragments/footer :: footer"></div>

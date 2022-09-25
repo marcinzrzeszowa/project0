@@ -3,6 +3,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -21,13 +22,16 @@ public class Article {
 
     @Column(name = "short_description", length = 200)
     @NotBlank(message = "Podaj opis")
+    @NotNull
     private String shortDescription;
 
     @Column(name = "description", length = 1000)
     @NotBlank(message = "Napisz treść")
+    @NotNull
     private String Description;
 
     @Column(name = "local_date")
+    @NotNull
     private LocalDate localDate;
 
     public Article() {
@@ -72,6 +76,17 @@ public class Article {
         Description = description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Article)) return false;
+        Article article = (Article) o;
+        return id.equals(article.id);
+    }
+    @Override
+    public int hashCode() {
+        return id.hashCode() + 21;
+    }
 
     @Override
     public String toString() {
@@ -82,19 +97,4 @@ public class Article {
                 ", localDate=" + localDate + '\'' +
                 '}';
     }
-
-   /* @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-
-        return id == category.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }*/
-
 }

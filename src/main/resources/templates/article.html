@@ -8,19 +8,19 @@
 
 <div th:replace="fragments/header :: header"></div>
 <div>
-            <form  th:object="${articleForm}"  method="POST">
-                <fieldset>
+    <form  th:object="${articleForm}"  th:method="POST">
+        <fieldset>
                         <!--<label th:text="#{articleForm.shortDescription}"></label>-->
-                        <label>Tytuł</label>
-                        <input type="text" th:field="*{shortDescription}" title="Opis" autofocus="true" />
+            <label>Tytuł</label>
+            <input type="text" th:field="*{shortDescription}" title="Opis" autofocus="true" />
 
-                        <label>Treść artykułu</label>
-                        <textarea type="text" th:field="*{description}"  autofocus="false" />
+            <label>Treść artykułu</label>
+            <textarea type="text" th:field="*{description}"  autofocus="false" />
 
-                    <input th:if="${action} == 'newArticle'"   type="submit" th:action="@{/articles/new}"  th:value="Dodaj" />
-                    <input th:if="${action} == 'editArticle'"  type="submit" th:action="@{/articles/edit/{id}}" th:value="Zapisz"  />
-                </fieldset>
-            </form>
+            <input th:if="${action} == 'newArticle'"   type="submit" th:action="@{/articles/new}"  th:value="Dodaj" />
+            <input th:if="${action} == 'editArticle'"  type="submit" th:action="@{/articles/edit/{id}}" th:value="Zapisz"  />
+        </fieldset>
+    </form>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

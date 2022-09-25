@@ -22,12 +22,19 @@ public class StockApiWrapper {
     public BigDecimal getPrice() {
         return getStock().getQuote().getPrice();
     }
+
     public String getName() {
-        return getStock().getName();
+        String name;
+        do {
+            name = getStock().getName();
+        }while(name==null);
+        return name;
     }
+
     public String getSymbol() {
         return getStock().getSymbol();
     }
+
     public BigDecimal getPreviousClose() throws IOException {
         return getStock().getQuote().getPreviousClose();
     }

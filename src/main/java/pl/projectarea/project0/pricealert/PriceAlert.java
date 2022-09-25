@@ -19,7 +19,7 @@ public class PriceAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "ticker")
     private String ticker;
@@ -62,7 +62,7 @@ public class PriceAlert {
         this(ticker,description,BigDecimal.ZERO,minPrice,isActive,user);
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
     public String getTicker() {

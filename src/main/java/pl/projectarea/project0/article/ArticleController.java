@@ -20,13 +20,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping(value = {"/","/index","/home"})
+    //TODO dodac kody HTTP RESPONSE do kontrolerow
+    @GetMapping(value = {"/","/index","/home","/articles"})
     public String showIndex(Model model){
-        model.addAttribute("articles", articleService.getArticles());
+        model.addAttribute("articles", articleService.getAllArticles());
         return "home";
     }
-
-    //, consumes = {"application/json"}
 
     @GetMapping("/articles/new")
     public String newArticle(Model model) {
@@ -34,6 +33,7 @@ public class ArticleController {
         model.addAttribute("action", "newArticle");
         return "article";
     }
+
     @PostMapping(value = {"/articles/new"})
     public String newArticle(@ModelAttribute("articleForm") Article article,
                              Model model,
@@ -47,12 +47,11 @@ public class ArticleController {
         logger.debug(String.format("Dodoano artykuł id: %s", article.getId()));
         return "redirect:/home";
     }
-
     
     @GetMapping("/articles/edit/{id}")
     public String editProduct(@PathVariable("id") Long articleId,
                               Model model){
-        Article article = articleService.findById(articleId);
+        Article article = articleService.findArticle(articleId);
         if (article != null){
             model.addAttribute("articleForm", article);
             model.addAttribute("action", "editArticle");
@@ -61,6 +60,7 @@ public class ArticleController {
             return "error/404";
         }
     }
+
     @PostMapping("/articles/edit/{id}")
     public String updateArticle( @PathVariable("id") Long id,
                                  @ModelAttribute("articleForm")Article article,
@@ -71,17 +71,14 @@ public class ArticleController {
         return "article";
         }
         articleService.updateOrSaveArticle(id,article);
-        return "home";
+        return "redirect:/home";
     }
-
-    @DeleteMapping("/articles/{id}")
+    @GetMapping (value = "/articles/delete/{id}")
     public String deleteArticle(@PathVariable("id") Long id){
-        if(articleService.getArticle(id)!=null){
+        Article article = articleService.findArticle(id);
+        if(article!=null){
             articleService.deleteArticle(id);
         }
-        return "home";
+        return "redirect:/home";
     }
-
-
-
 }

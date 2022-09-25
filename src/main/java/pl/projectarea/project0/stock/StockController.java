@@ -3,6 +3,7 @@ package pl.projectarea.project0.stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import pl.projectarea.project0.stock.StockApiWrapper;
@@ -27,6 +28,7 @@ public class StockController {
         model.addAttribute("stocks", stockService.findStocks());
         return "stocks";
     }
+
     @GetMapping (path = "/stocks/{ticker}")
     public String getExchangeRate(@PathVariable("ticker") String ticker, Model model) throws IOException {
         StockApiWrapper saw = stockService.findStock(ticker);

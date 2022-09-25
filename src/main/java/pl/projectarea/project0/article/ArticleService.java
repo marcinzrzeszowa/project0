@@ -16,14 +16,39 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public List<Article> getArticles( ){
-        return articleRepository.findAll();
+
+    //dodane nowe------------------------------------------------------
+    public Article createArticle(Article article) {
+        Article newArticle = new Article();
+        newArticle.setShortDescription(article.getShortDescription());
+        newArticle.setDescription(article.getShortDescription());
+        newArticle.setLocalDate(article.getLocalDate());
+        articleRepository.save(newArticle);
+        return newArticle;
     }
 
+
+    //throws ResourceNotFoundException
+    public Optional<Article> updateArticle(Long id, Article changedArticle) throws Exception{
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()){
+            throw new Exception();
+        }
+        else{
+            article.get().setShortDescription(changedArticle.getShortDescription());
+            article.get().setDescription(changedArticle.getShortDescription());
+            article.get().setLocalDate(changedArticle.getLocalDate());
+            articleRepository.save(article.get());
+            return article;
+        }
+    }
+    //-----------------------------------------------------------------
     public Article getArticle(Long id){
         return articleRepository.findById(id).orElseThrow(()->new RuntimeException("Artykuł nie istnieje"));
     }
-
+    public List<Article> getAllArticles( ){
+        return articleRepository.findAll();
+    }
     public Article saveArticle(Article article) {
         if(!article.getDescription().isBlank() && !article.getShortDescription().isBlank()){
             articleRepository.save(article);
@@ -31,14 +56,12 @@ public class ArticleService {
         return article;
     }
     public void deleteArticle(Long id) {
-        //Optional<Article> article = articleRepository.findById(id).
     if (!articleRepository.existsById(id)){
         throw new IllegalStateException("Nie możesz usunąć nie istniejącego artykułu");
     }
     articleRepository.deleteById(id);
     }
 
-    //@Transactional
     public Article updateOrSaveArticle(Long id, Article newArticle) {
             Article article = articleRepository.findById(id)
                     .map(element ->{
@@ -50,11 +73,9 @@ public class ArticleService {
                         return articleRepository.save(newArticle);
                     });
             return article;
-
-            //ifPresentOrElse(System.out::println, ()-> System.out.println() "Nie może znaleść artykułu")
     }
 
-    public Article findById(Long articleId) {
+    public Article findArticle(Long articleId) {
         return articleRepository.findById(articleId).stream().findFirst().orElse(null);
     }
 }
