@@ -6,41 +6,59 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div class="center">
-    <table>
-        <tr>
-            <th>Lp</th>
-            <th>Symbol</th>
-            <th>Cena</th>
-            <th>Cena max</th>
-            <th>Cena min</th>
-            <th>Aktywny</th>
-            <th>Użytkownik</th>
-        </tr>
-        <tr th:each="alert: ${alert}">
-            <td th:text="${alert.getId()}"/>
-            <td th:text="${alert.getTicker()}"/>
-            <td th:text="${alert.getDescription()}"/>
-            <td th:text="${alert.getMaxPrice() == 0 ? ' - ' : alert.getMaxPrice()}"/>
-            <td th:text="${alert.getMinPrice() == 0 ? ' - ' : alert.getMinPrice()}"/>
-            <td th:text="${alert.getActive() }"/>
-            <td th:text="${alert.getUser().getUsername()}"/>
-            <td><!--<a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> Dodaj</a>--></td>
-        </tr>
-    </table>
 
-    <fieldset>
-        <legend>Nowy projekt</legend>
-    <form action="#" method="post" th:action="@{/newalert}" th:object="${alert}">
-        <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" class="c(red)"></p>
+    <!--
+    My View
+
+    List<Test> test = new ArrayList<>();
+    model.addAttribute("test", test);
+    List<Test> tests = testRepository.findAll();
+    model.addAttribute("tests", tests);
+
+My HTML
+
+<div class="col-lg-3" th:object="${test}">
+    <select class="form-control" id="testOrder" name="testOrder">
+        <option value="">Select Test Order</option>
+        <option th:each="test : ${tests}"
+                th:value="${test.testCode}"
+                th:text="${test.testCode}+' : '+${test.testName}"></option>
+    </select>
+</div>
+-->
+    <form method="post" th:object="${alertForm}">
+
+
+            <select id="ticker" name="tricker">
+                <option value="">Ticker</option>
+                <option th:each="key: ${tickers.keySet()}"
+                        th:value="${key}"
+                        th:text="${tickers.get(key)}"></option>
+            </select>
+
+
+        <fieldset>
+            <label>Symbol kursu
+                <input type="text" th:field="*{ticker}"/>
+            </label>
             <label>Opis
                 <input type="text" th:field="*{description}"/>
             </label>
-        <p>
-            <button type="submit">Dodaj</button>
-            <button type="reset">Wyczyść</button>
-        </p>
+            <label>Cena maksymalna
+                <input type="number" th:field="*{maxPrice}"/>
+            </label>
+            <label>Cena minimalna
+                <input type="number" th:field="*{minPrice}"/>
+            </label>
+            <label>Alert aktywny
+                <input  type="checkbox" th:field="*{Active}"/>
+            </label>
+            <br>
+            <input th:if="${action} == 'newAlert'"   type="submit" th:action="@{/alerts/new}"  th:value="Dodaj" />
+            <input th:if="${action} == 'editAlert'"  type="submit" th:action="@{/alerts/edit/{id}}" th:value="Zapisz"  />
+        </fieldset>
     </form>
-    </fieldset>
+
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

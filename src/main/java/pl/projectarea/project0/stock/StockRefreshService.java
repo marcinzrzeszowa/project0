@@ -34,7 +34,7 @@ public class StockRefreshService {
         scheduler.scheduleWithFixedDelay(()->
                 stockToRefresh.forEach((stock, value) ->{
                     if(stock.getLastAccessed().isBefore(LocalDateTime.now().minus(refreshInMinutes))) {
-                        System.out.println("Pobieranie aktualnego kursu waluty co "+ refreshPeriod +" minut: "+ stock.getStock().getSymbol());
+                        System.out.println("Pobieranie aktualnego kursu waluty co "+ refreshPeriod +" minut: "+ stock.getSymbol());
                         stockToRefresh.remove(stock);
                         stock.setLastAccessed(LocalDateTime.now());
                         stockToRefresh.put(stock, true);

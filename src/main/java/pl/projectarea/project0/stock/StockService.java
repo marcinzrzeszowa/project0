@@ -1,19 +1,14 @@
 package pl.projectarea.project0.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pl.projectarea.project0.StringColor;
 import pl.projectarea.project0.pricealert.PriceAlert;
 import pl.projectarea.project0.pricealert.PriceAlertObserver;
 import pl.projectarea.project0.pricealert.PriceAlertRepository;
-import pl.projectarea.project0.pricealert.PriceAlertService;
-import yahoofinance.YahooFinance;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -22,49 +17,29 @@ import java.util.stream.Collectors;
 @Service
 public class StockService implements PriceAlertObserver {
 
-    private final StockRefreshService refreshService;
     private final PriceAlertRepository priceAlertRepository;
-    //TODO availableTickersList zamienić na availableTickersMap
-    private static final List<String> availableTickersList = Arrays.asList("BTC-USD","ETH-USD","DOT-USD","PLN=X","EURPLN=X","GBPPLN=X","CHFPLN=X","EUR=X","GC=F","SI=F","BZ=F","^GSPC");
-    private static final Map<String,String> availableTickersMap = new HashMap<>();
-
-    private List<PriceAlert> cachePriceAlertList = new ArrayList<>();
+    private StockTicker stockTickers;
+    private List<PriceAlert> cachePriceAlertList = new LinkedList<>();
     private boolean isActualAlertList = false;
-    private static short loopDelayCounter =0;  //Opoznienie riceAlertCheckLoop() powoduje ze po drugiej petli wlancza sie ladowanie listy a cache
+    private static short loopDelayCounter =0;
 
     @Autowired
-    public StockService(StockRefreshService refreshService, PriceAlertRepository priceAlertRepository) {
-        this.refreshService = refreshService;
+    public StockService(StockTicker stockTickers, PriceAlertRepository priceAlertRepository) {
+        this.stockTickers = stockTickers;
         this.priceAlertRepository = priceAlertRepository;
-        initAvailableTickersMap();
-    }
-
-    private static void initAvailableTickersMap(){
-        availableTickersMap.put("BTC-USD","BTC/USD");
-        availableTickersMap.put("ETH-USD","ETH/USD");
-        availableTickersMap.put("DOT-USD","DOT/USD");
-        availableTickersMap.put("PLN=X","PLN/USD");
-        availableTickersMap.put("EURPLN=X","EUR/PLN");
-        availableTickersMap.put("GBPPLN=X","GBP/PLN");
-        availableTickersMap.put("CHFPLN=X","CHF/PLN");
-        availableTickersMap.put("EUR=X","USD/EUR");
-        availableTickersMap.put("GC=F","Złoto/USD");
-        availableTickersMap.put("SI=F","Srebro/USD");
-        availableTickersMap.put("BZ=F","Ropa/USD");
-        availableTickersMap.put("^GSPC","S&P500");
     }
 
     public StockApiWrapper findStock(final String ticker){
         try{
-            return new StockApiWrapper(YahooFinance.get(ticker));
-        }catch (IOException e){
+            return StockApiWrapper.getInstance(ticker);
+        }catch (IOException | InterruptedException e){
             e.printStackTrace();
         }
         return null;
     }
 
     public Map<String,String> loadAvailableStocksMap(){
-        return availableTickersMap;
+        return stockTickers.getStockTickersMap();
     }
 
     private static short startLoopDelayCounter(){
@@ -75,59 +50,110 @@ public class StockService implements PriceAlertObserver {
         return loopDelayCounter;
     }
 
-    //60 000 - 1min
-    @Scheduled(fixedRate = 10000)
+    /* @Scheduled() priceAlertCheckLoop()
+     * Co robi:
+     *
+     * Stany pętli dla wartości zmiennej counter:
+     * counter = 0 - 2 - Przebiegi pętli potrzebny na inicjalizacji alertów cachePriceAlertList bezpośrednio z repozytorium priceAlertRepository, oraz
+     *                   zapisanie ich kopii w cache;
+     * counter >= 2     - Rozpoczęcie porównywania cen rynkowych stocksList (z StockService) z cenami cachePriceAlertList
+     * counter >= 3    - Załadowanie ceny PriceAlert z cache nasłuchiwanie zmian ceny (flaga isActualAlertList = false) z PriceAlertService
+     * */
+    @Scheduled(fixedRate = 10000) //60 000 - 1min
     public void priceAlertCheckLoop() throws IOException {
         short counter = startLoopDelayCounter();
-
-        //System.out.println("START isActualAlertList " +isActualAlertList);
-        //System.out.println("START startLoopDelayCounter " + counter );
 
         if(counter<3){
             cachePriceAlertList = readPriceAlertList();
         }else{
             cachePriceAlertList = loadPriceAlertList();
         }
-
         if(counter>=2){
-            if(!cachePriceAlertList.isEmpty()){
-                showAlertsList(cachePriceAlertList);
-            }else{
-                System.out.println("Brak alertów w liście");
-            }
-
-            loadStockPrices();
-
-            compareStockPricesWithPriceAlertList();
+            showAlertsList(cachePriceAlertList);
+            Set<String> tickersSet = getDistinctTickersFromAlertList(cachePriceAlertList);
+            List<StockApiWrapper> stocksList = loadStocks(tickersSet);
+            compareStocksPricesWithPriceAlertsList(stocksList,cachePriceAlertList);
         }
     }
 
-    private void compareStockPricesWithPriceAlertList() {
+    private Set<String> getDistinctTickersFromAlertList(List<PriceAlert> cachePriceAlertList) {
+       Set<String> set = new HashSet<>();
+        for(PriceAlert alert: cachePriceAlertList){
+           if(!set.contains(alert.getTicker())){
+               set.add(alert.getTicker());
+           }
+       }
+        return set;
+    }
+
+    private void compareStocksPricesWithPriceAlertsList(List<StockApiWrapper> stocksList, List<PriceAlert> priceAlertsList) {
 
         System.out.println(StringColor.ANSI_GREEN+"compareStockPricesWithPriceAlertList() ******* "+ LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+" *******");
-
+        // TODO dodac edycje Pricealert w petli zeby zmienila element w bazie a nie tylko w cache
+        //TODO Querry z PriceAlert to User na email
+        // TODO zmienic strukture danych aby nie wracalo NULL z getName() StockAPIWrapper
+        for(StockApiWrapper stockElement: stocksList){
+            for (PriceAlert priceAlert: priceAlertsList){
+                if(stockElement.getSymbol().equals(priceAlert.getTicker())){
+                    //sprawdzenie ceny maksymalnej
+                    if(stockElement.getPrice().compareTo(priceAlert.getMaxPrice()) >= 0){
+                        System.out.println("CENA POWYZEJ MAX ! ");
+                        System.out.println(priceAlert.toString());
+                    }else if(stockElement.getPrice().compareTo(priceAlert.getMaxPrice()) < 0){
+                        // cena rynkowa niższa od ceny MAX alertu
+                    }
+                    //sprawdzenie ceny minimalnej
+                    if(stockElement.getPrice().compareTo(priceAlert.getMinPrice()) >= 0){
+                        // cena rynkowa wyższa od ceny MIN alertu
+                    }else if(stockElement.getPrice().compareTo(priceAlert.getMinPrice()) < 0){
+                        /* cena rynkowa jest nizsza od ceny MIN alertu
+                         *
+                         * wyslac info do obserwatorow ceny
+                         *
+                         * ustawic alert jako nie aktywny
+                         *
+                         * */
+                        System.out.println("CENA PONIZEJ MIN ! ");
+                        System.out.println(priceAlert.toString());
+                        priceAlert.setActive(false);
+                    }
+                }
+            }
+        }
         System.out.println(StringColor.ANSI_GREEN+"************************************************");
         System.out.println(StringColor.ANSI_RESET);
     }
 
-    private void loadStockPrices() {
-        System.out.println(StringColor.ANSI_RED+"loadStockPrices() ******* "+ LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+" *******");
-
-        System.out.println(StringColor.ANSI_RED+"************************************************");
-        System.out.println(StringColor.ANSI_RED);
+    private List<StockApiWrapper> loadStocks(Set<String> tickersSet) {
+        System.out.println(StringColor.ANSI_PURPLE+"loadStockPrices() ******* "+ LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+" *******");
+        List<StockApiWrapper> list = findStocks(tickersSet);
+        for(StockApiWrapper element: list){
+            System.out.println(element.getSymbol() + " " + element.getPrice());
+        }
+        System.out.println(StringColor.ANSI_PURPLE+"************************************************");
+        System.out.println(StringColor.ANSI_RESET);
+        return list;
     }
 
     private void showAlertsList(List<PriceAlert> list){
         System.out.println(StringColor.ANSI_CYAN+"PriceAlert ******* "+ LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+" *******");
         for(PriceAlert alert: list){
-            System.out.println(alert.getId() +": "+alert.getTicker() +", max: "+ alert.getMaxPrice() +" ,min: "+ alert.getMinPrice());
+                System.out.println(alert.getId() +": "+alert.getTicker() +", max: "+ alert.getMaxPrice() +" ,min: "+ alert.getMinPrice());
         }
         System.out.println(StringColor.ANSI_CYAN+"************************************************");
         System.out.println(StringColor.ANSI_RESET);
     }
 
-    public List<StockApiWrapper> findStocks() {
-        return availableTickersList.stream()
+    public List<StockApiWrapper> findAllStocks() {
+        return stockTickers.getStockTickers()
+                    .stream()
+                    .map(this::findStock)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+    }
+
+    private List<StockApiWrapper> findStocks(Set<String> tickers) {
+        return tickers.stream()
                     .map(this::findStock)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
@@ -151,8 +177,7 @@ public class StockService implements PriceAlertObserver {
         isActualAlertList = false;
     }
 
-
-    public BigDecimal findPrice(final StockApiWrapper stock) throws IOException{
+   /* public BigDecimal findPrice(final StockApiWrapper stock) throws IOException{
         return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getPrice();
     }
 
@@ -175,6 +200,6 @@ public class StockService implements PriceAlertObserver {
     public BigDecimal findDayLow(final StockApiWrapper stock) throws IOException{
         return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getDayLow();
     }
-
+*/
 
 }

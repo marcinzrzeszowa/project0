@@ -1,6 +1,8 @@
 package pl.projectarea.project0.stock;
 
+import pl.projectarea.project0.StringColor;
 import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -11,11 +13,27 @@ public class StockApiWrapper {
     private final Stock stock;
     private LocalDateTime lastAccessed;
 
-    public StockApiWrapper(Stock stock ) {
+    private StockApiWrapper(Stock stock ) {
         this.stock = stock;
         this.lastAccessed = LocalDateTime.now();
     }
-    public Stock getStock() {
+
+    public static StockApiWrapper getInstance(String ticker) throws IOException, InterruptedException {
+            Stock stock;
+            int tryLoadStockCounter=1;
+
+            do{
+                stock = YahooFinance.get(ticker);
+                if(stock==null){
+                    System.out.println(StringColor.ANSI_RED+"TRY TO LOAD "+ ticker+" "+ tryLoadStockCounter+ " times"+StringColor.ANSI_RESET);
+                    Thread.currentThread().sleep(3000);
+                    tryLoadStockCounter++;
+                }
+            }while(stock==null & tryLoadStockCounter<3);
+        return new StockApiWrapper(stock);
+    }
+
+    private Stock getStock() {
         return stock;
     }
 
@@ -24,11 +42,7 @@ public class StockApiWrapper {
     }
 
     public String getName() {
-        String name;
-        do {
-            name = getStock().getName();
-        }while(name==null);
-        return name;
+      return getStock().getName();
     }
 
     public String getSymbol() {
@@ -55,5 +69,4 @@ public class StockApiWrapper {
     public void setLastAccessed(LocalDateTime lastAccessed) {
         this.lastAccessed = lastAccessed;
     }
-
 }

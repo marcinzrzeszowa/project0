@@ -65,6 +65,7 @@ public class PriceAlert {
     public Long getId() {
         return id;
     }
+
     public String getTicker() {
         return ticker;
     }
@@ -104,6 +105,7 @@ public class PriceAlert {
     public void setActive(Boolean active) {
         isActive = active;
     }
+
     public User getUser() {
         return user;
     }
@@ -112,4 +114,16 @@ public class PriceAlert {
         this.user = user;
     }
 
+    @Override
+    public String toString() {
+        return "PriceAlert{" +
+                "id=" + id +
+                ", ticker='" + ticker + '\'' +
+                ", description='" + description + '\'' +
+                ", maxPrice=" + maxPrice +
+                ", minPrice=" + minPrice +
+                ", isActive=" + isActive +
+                ", user=" + user +
+                '}';
+    }
 }

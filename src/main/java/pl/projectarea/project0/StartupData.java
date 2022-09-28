@@ -43,15 +43,13 @@ class StartupData implements CommandLineRunner {
         userRepository.save(user1);
         userRepository.save(user2);
 
-        BigDecimal maxPrice = new BigDecimal(23000);
-        BigDecimal minPrice = new BigDecimal(20000);
-        BigDecimal minPrice2 = new BigDecimal(4);
-
-
-        PriceAlert pa1 = new PriceAlert("BTC-USD","Cena poza zakresem "+ maxPrice +" - " + minPrice,maxPrice,minPrice,true, user1 );
-        PriceAlert pa2 = new PriceAlert("BTC-USD","Cena powyzej ceny "+ maxPrice,maxPrice,true, user1 );
-        PriceAlert pa3 = new PriceAlert("PLN=X","Cena poniżej ceny "+ minPrice2,true,minPrice2, user2 );
-        priceAlertRepository.saveAll(List.of(pa1,pa2,pa3));
+        PriceAlert pa1 = new PriceAlert("BTC-USD", "Opis1",new BigDecimal(23000),  new BigDecimal(20000), true, user1 );
+        PriceAlert pa2 = new PriceAlert("BTC-USD","Cena powyzej ceny " ,new BigDecimal(18000),true, user1 );
+        PriceAlert pa3 = new PriceAlert("PLN=X","Cena poniżej ceny " ,true, new BigDecimal(5), user2 );
+        PriceAlert pa4 = new PriceAlert("PLN=X","Opis 4 ",true, new BigDecimal(4), user2 );
+        PriceAlert pa5 = new PriceAlert("EURPLN=X","Opis 5",new BigDecimal(7),new BigDecimal(6),true, user2 );
+        PriceAlert pa6 = new PriceAlert("EURPLN=X","Opis 6",true,new BigDecimal(5), user1 );
+        priceAlertRepository.saveAll(List.of(pa1,pa2,pa3,pa4,pa5,pa6));
     }
 
     private void loadArticles(){

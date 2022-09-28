@@ -5,8 +5,13 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 
+
+
+<h2>Alerty</h2>
+
+<a th:href="@{'/alerts/new'}">Nowy alert cenowy</a>
+
 <div class="center">
-    <h2>Alerty</h2>
     <table>
         <tr>
             <th>Lp</th>
@@ -18,6 +23,7 @@
             <th>Użytkownik</th>
             <th>Edytuj</th>
         </tr>
+
         <tr th:each="alert: ${alerts}">
             <td th:text="${alert.getId()}"/>
             <td th:text="${alert.getTicker()}"/>
@@ -26,7 +32,7 @@
             <td th:text="${alert.getMinPrice() == 0 ? ' - ' : alert.getMinPrice()}"/>
             <td th:text="${alert.getActive()}"/>
             <td th:text="${alert.getUser().getUsername()}"/>
-            <td><a th:href="@{'/alerts/{id}'(id=${alert.getId()})}">Edytuj</a></td>
+            <td><a th:href="@{'/alerts/edit/{id}'(id=${alert.getId()})}">Edytuj</a></td>
             <td><a th:href="@{'/alerts/delete/{id}'(id=${alert.getId()})}">Usuń</a></td>
         </tr>
     </table>

@@ -3,11 +3,8 @@ package pl.projectarea.project0.stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import pl.projectarea.project0.stock.StockApiWrapper;
-import pl.projectarea.project0.stock.StockService;
 
 
 import java.io.IOException;
@@ -25,7 +22,7 @@ public class StockController {
     @GetMapping(value = {"/stocks"})
     public String getAvailableStocks(Model model){
         model.addAttribute("stocksList", stockService.loadAvailableStocksMap());
-        model.addAttribute("stocks", stockService.findStocks());
+        model.addAttribute("stocks", stockService.findAllStocks());
         return "stocks";
     }
 
