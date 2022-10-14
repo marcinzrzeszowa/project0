@@ -4,7 +4,7 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<a th:href="@{'/articles/new'}">Nowy Artykuł</a>
+<a th:href="@{'/articles/new'}">Dodaj Artykuł</a>
 
   <div th:each="article: ${articles}">
     <h4 th:text="${article.getShortDescription}"></h4>

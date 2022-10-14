@@ -21,6 +21,8 @@ public class PriceAlert {
     @Column(name = "id")
     private Long id;
 
+
+    // TODO Zmienic Ticker na klase
     @Column(name = "ticker")
     private String ticker;
 
@@ -29,10 +31,11 @@ public class PriceAlert {
     @NotEmpty
     private String description;
 
-    @Column(name = "max_price", length = 10000)
+
+    @Column(name = "max_price", length = 10000, precision = 10, scale = 3)
     private BigDecimal maxPrice;
 
-    @Column(name = "min_price", length = 10000)
+    @Column(name = "min_price", length = 10000, precision = 10, scale = 3)
     private BigDecimal minPrice;
 
     @Column(name = "is_active")

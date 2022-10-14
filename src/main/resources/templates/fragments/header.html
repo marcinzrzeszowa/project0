@@ -10,8 +10,7 @@
 
 <body>
 <div th:fragment="header">
-    <h1>ProjectArea.pl</h1>
-    <p>Projekty wykonane przez MJ <a href="https://github.com/marcinzrzeszowa">github</a></p>
+    <h1><img th:src="@{/css/logo80.png}" style="display:inline-block; padding-right:0px; width:50px; height:50px;">ProjectArea.pl</h1>
     <nav>
         <ul>
             <li>
@@ -22,6 +21,9 @@
             </li>
             <li>
                 <a href="/alerts">Alerty</a>
+            </li>
+            <li>
+                <a href="/about">Kontakt</a>
             </li>
             <li>
                 <a href="/login">Logowanie</a>

@@ -69,7 +69,6 @@ public class PriceAlertController {
         }
     }
 
-
     @PostMapping("/alerts/edit/{id}")
     public String updateAlert(@PathVariable("id") Long id,
                               @ModelAttribute("alertForm")PriceAlert alert,
@@ -82,7 +81,6 @@ public class PriceAlertController {
         priceAlertService.updatePriceAlert(id, alert);
         return "redirect:/alerts";
         }
-
 
     @GetMapping(value = "/alerts/delete/{id}")
     public String deleteAlert(@PathVariable("id") Long id){

@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import pl.projectarea.project0.user.UserRepository;
+import pl.projectarea.project0.user.UserRole;
 import pl.projectarea.project0.user.UserService;
 
 @Configuration
@@ -35,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
                 .antMatchers("/","/articles").permitAll()
-                //.antMatchers(HttpMethod.POST,"/articles").hasAnyRole(MODERATOR, ADMIN)
+                //.antMatchers(HttpMethod.POST,"/articles").hasAnyRole(, ADMIN)
                 //.antMatchers(HttpMethod.DELETE,"/articles").hasRole(ADMIN)
                 .and()
                 .formLogin().permitAll()
