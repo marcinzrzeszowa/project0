@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header :: headerCss">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div th:class="content">
+
+    <!--
+    My View
+
+    List<Test> test = new ArrayList<>();
+    model.addAttribute("test", test);
+    List<Test> tests = testRepository.findAll();
+    model.addAttribute("tests", tests);
+
+My HTML
+
+<div class="col-lg-3" th:object="${test}">
+    <select class="form-control" id="testOrder" name="testOrder">
+        <option value="">Select Test Order</option>
+        <option th:each="test : ${tests}"
+                th:value="${test.testCode}"
+                th:text="${test.testCode}+' : '+${test.testName}"></option>
+    </select>
+</div>
+-->
+
+
+
+            <!--<select id="ticker" name="tricker">
+                <option value="">Ticker</option>
+                <option th:each="key: ${tickers.keySet()}"
+                        th:value="${key}"
+                        th:text="${tickers.get(key)}"></option>
+            </select>-->
+
+       <!-- <label th:text="#{user.gender} + '*'"></label>
+        <select th:field="*{gender}" class="form-control custom-select-lg" required title="gender">
+            <option value="HIDDEN" th:text="#{user.gender.hidden}">Hidden</option>
+            <option value="MALE" th:text="#{user.gender.male}">Male</option>
+            <option value="FEMALE" th:text="#{user.gender.female}">Female</option>
+        </select>
+
+<td th:text="${alert.getMaxPrice() == 0 ? ' - ' : alert.getMaxPrice()}"/>
+-->
+    <form method="post" th:object="${alertForm}">
+        <fieldset>
+
+            <label>Symbol kursu
+                <select th:field="*{ticker}">
+                    <option th:value="${ticker}" th:text=${tickers.get(ticker)} selected></option>
+                    <option th:each="key: ${tickers.keySet()}"
+                            th:value="${key}"
+                            th:text="${tickers.get(key)}"></option>
+                </select>
+            </label>
+
+            <label>Opis
+                <input type="text" th:field="*{description}"/>
+            </label>
+            <label>Cena maksymalna
+                <input type="number" th:field="*{maxPrice}"/>
+            </label>
+            <label>Cena minimalna
+                <input type="number" th:field="*{minPrice}"/>
+            </label>
+            <label>Alert aktywny
+                <input  type="checkbox" th:field="*{Active}"/>
+            </label>
+                <input  type="hidden" th:field="*{user}"/>
+            <br>
+            <input th:if="${action} == 'newAlert'"   type="submit" th:action="@{/alerts/new}"  th:value="Dodaj" />
+            <input th:if="${action} == 'editAlert'"  type="submit" th:action="@{/alerts/edit/{id}}" th:value="Zapisz"  />
+
+
+        </fieldset>
+    </form>
+
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

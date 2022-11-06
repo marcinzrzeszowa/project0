@@ -1,13 +1,11 @@
 package pl.projectarea.project0.stock;
 
-import pl.projectarea.project0.StringColor;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class StockApiWrapper {
     private final Stock stock;
@@ -25,7 +23,6 @@ public class StockApiWrapper {
             do{
                 stock = YahooFinance.get(ticker);
                 if(stock==null){
-                    System.out.println(StringColor.ANSI_RED+"TRY TO LOAD "+ ticker+" "+ tryLoadStockCounter+ " times"+StringColor.ANSI_RESET);
                     Thread.currentThread().sleep(3000);
                     tryLoadStockCounter++;
                 }

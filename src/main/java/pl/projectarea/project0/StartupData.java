@@ -38,8 +38,8 @@ class StartupData implements CommandLineRunner {
 
     private void LoadUsers(){
 
-        User user1 = new User("Jan", UserService.passwordEncoder().encode("123"),"ROLE_MODERATOR", "marcinzbrzozowa@gmail.com");
-        User user2 = new User("Admin",UserService.passwordEncoder().encode("123"),"ROLE_ADMIN", "marcinzbrzozowa@gmail.com");
+        User user1 = new User("Admin",UserService.passwordEncoder().encode("123"),"ROLE_ADMIN", "marcinzbrzozowa@gmail.com");
+        User user2 = new User("test", UserService.passwordEncoder().encode("test"),"ROLE_MODERATOR", "test@gmail.com");
         userRepository.save(user1);
         userRepository.save(user2);
 
@@ -53,15 +53,36 @@ class StartupData implements CommandLineRunner {
     }
 
     private void loadArticles(){
-        Article a1 = new Article("Witryna www.projectarea.pl", "Moja piewrsza aplikacja internetowa. Powstała w celu przećwiczenia wiedzę z zakresu tworzenia aplikacji w języku Java. \nJest to strona do umieszczania informacji o moich projekatach programistycznych.\n Powstała z wykorzystaniem m.in.technologii jak: Spring Boot, MySQL, Thymeleaf, CSS");
-        Article a2 = new Article("Walutomat... ","Jestem w trakcie tworzenia równoległego projektu kalkulatora wymiany walut");
-        articleRepository.saveAll(List.of(a1,a2));
+        Article a1 = new Article(
+                "Dlaczego powstała strona ProjectArea",
+                "<div class=\"contentLeft\">Witam serdecznie. <br/>  Potrzeba przećwiczenia i utrwalenia wiedzy z zakresu programowania, stała się powodem powastania tej witryny." +
+                " Szukałem tematu na ciekawy projekt, i stąd pomysł na stronę. Biorąc pod uwagę moje bardzo małe doświadczenie z zakresu programowania, projekt okazał się wymagający i czasochłonny. Strona internetowa jest funkcjonalna na zadowalającym poziome. Dlatego jestem zadowolony z osiągniętego efektu." +
+                "Chciałbym jednak zaznaczyć, że prace nad treścią witryny i formą prezentacji nadal trwają.</br>" +
+                "\tGłówną funkcjonalnością mojej aplikacji jest:</br>" +
+                "<ul>" +
+                "   <li>" +
+                        "Pobieranie aktualnego kursów surowców, walut i kryptowalut z giełdy. Wykożystałem do tego dane, udostępniane na stronie <a href=\"https://finance.yahoo.com\">https://finance.yahoo.com</a>. Serwis daje dostęp do darmowego interfejs dla programistów, i nie nakłada dużych ograniczeń w wersji bezpłatnej." +
+                "   </li>"+
+                        "Kolejną funkcjonalnością jest przechowywanie wiadomości tekstowych użytkowników w bazie danych. Każda wiadomośc zawiera informacje o cene, konkretnego waloru z giełdy." +
+                        "Wiadomości te mają na celu informować użutkownika o zmianie ceny rynkowaj w interesującym go zakresie."+
+                "   <li>" +
+                        "Pobieranie danych zewnętrzych z giełdy odbywa się, w regularnym odstępie czasowym ustawionym na 5 minut." +
+                "   </li>"+
+                "   <li>" +
+                "Następnie ceny z giełdy porównywane są z zakresem cen zapisanym przez użytkowników." +
+                "Jeżeli aktulnay kurs z giełdy przkracza wartość ceny maksymalnej, lub spada poniżej wartości ceny minimalnej, zostanie wysłana wiadomość." +
+                "Każda wiadomość powiązana jest z kontem użytkownika i zotaje przesłana na wskazany przy rejestracji adres e-mail." +
+                "Następnie wiadomość przetaje być aktywna i nie jest brana pod uwagę przy kolejnym cyklu sprawdzania ceny." +
+                "Aplikacja nasłuchuje zmian w liscie wiadomości uzytkowników w celu jej aktualizacji." +
+                "Tylko zarejestrowany użytkownik ma możliwość dodawania i edycji swoich wiadomości." +
+                "Konto administratora umożliwia zarządzanie użytkownikami i wiadomościami wszystkich użytkowników.</br>" +
+                "Każdy odwiedzający stronę, ma możliwość przeglądnięcia kursów giełdowych z dostępnej listy wraz z wskaźnikami giełdowymi oraz zapoznaniem się z nowościami na stronie startowej." +
+                "Projekt powstał z wykorzystaniem języka programowania Java, oraz technologii: Spring Boot, MySQL, Thymeleaf, CSS </div>" +
+                "   </li>"+
+                "</ul>");
+        articleRepository.saveAll(List.of(a1));
     }
-
 
     private void loadPriceAlerts(){
-
     }
-
-
 }

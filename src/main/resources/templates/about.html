@@ -4,13 +4,15 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-
-<h4>Witaj!</h4>
-<p>Dziękuję za odwiedzenie mojej strony.</p>
-<p>Pozdrawiam: Marcin Janowski</p>
-<p>email: <u>marcinzrzeszowa@gmail.com</u></p>
-<p>Moje repozytorium: <a href="https://github.com/marcinzrzeszowa">github</a></p>
-
+    <div th:class="content">
+        <h4>Witam i pozdrawiam </h4>
+        <p>Marcin Janowski</p>
+        <br>
+        <p>Email: <u>marcinzrzeszowa@gmail.com</u></p>
+    </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
+
+
+

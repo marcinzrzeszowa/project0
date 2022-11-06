@@ -16,8 +16,6 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-
-    //dodane nowe------------------------------------------------------
     public Article createArticle(Article article) {
         Article newArticle = new Article();
         newArticle.setShortDescription(article.getShortDescription());
@@ -26,7 +24,6 @@ public class ArticleService {
         articleRepository.save(newArticle);
         return newArticle;
     }
-
 
     //throws ResourceNotFoundException
     public Optional<Article> updateArticle(Long id, Article changedArticle) throws Exception{
@@ -46,19 +43,23 @@ public class ArticleService {
     public Article getArticle(Long id){
         return articleRepository.findById(id).orElseThrow(()->new RuntimeException("Artykuł nie istnieje"));
     }
+
     public List<Article> getAllArticles( ){
         return articleRepository.findAll();
     }
+
     public Article saveArticle(Article article) {
         if(!article.getDescription().isBlank() && !article.getShortDescription().isBlank()){
             articleRepository.save(article);
         }
         return article;
     }
+
     public void deleteArticle(Long id) {
     if (!articleRepository.existsById(id)){
         throw new IllegalStateException("Nie możesz usunąć nie istniejącego artykułu");
     }
+
     articleRepository.deleteById(id);
     }
 

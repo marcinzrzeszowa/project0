@@ -26,12 +26,13 @@ public class StockController {
         return "stocks";
     }
 
-    @GetMapping (path = "/stocks/{ticker}")
+   /* @GetMapping (path = "/stocks/{ticker}")
     public String getExchangeRate(@PathVariable("ticker") String ticker, Model model) throws IOException {
         StockApiWrapper saw = stockService.findStock(ticker);
         model.addAttribute("stockApiWrapper", saw);
         return "show";
     }
+*/
    /* @GetMapping(value = {"/stock"})
     public String getExchangeRates(Model model)  throws IOException{
         model.addAttribute("currencies", stockServiceOld.getCurrenciesList());

@@ -5,7 +5,7 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 
-<div class="center">
+<div th:class="content">
 
     <!--
     My View
@@ -26,7 +26,7 @@ My HTML
     </select>
 </div>
 -->
-    <form method="post" th:object="${alertForm}">
+
 
 
             <!--<select id="ticker" name="tricker">
@@ -36,11 +36,26 @@ My HTML
                         th:text="${tickers.get(key)}"></option>
             </select>-->
 
+       <!-- <label th:text="#{user.gender} + '*'"></label>
+        <select th:field="*{gender}" class="form-control custom-select-lg" required title="gender">
+            <option value="HIDDEN" th:text="#{user.gender.hidden}">Hidden</option>
+            <option value="MALE" th:text="#{user.gender.male}">Male</option>
+            <option value="FEMALE" th:text="#{user.gender.female}">Female</option>
+        </select>
 
+<td th:text="${alert.getMaxPrice() == 0 ? ' - ' : alert.getMaxPrice()}"/>
+-->
+    <form method="post" th:object="${alertForm}">
         <fieldset>
             <label>Symbol kursu
-                <input type="text" th:field="*{ticker}"/>
+                <select th:field="*{ticker}">
+                    <option th:value="${ticker}" th:text=${tickers.get(ticker)} selected></option>
+                    <option th:each="key: ${tickers.keySet()}"
+                            th:value="${key}"
+                            th:text="${tickers.get(key)}"></option>
+                </select>
             </label>
+
             <label>Opis
                 <input type="text" th:field="*{description}"/>
             </label>

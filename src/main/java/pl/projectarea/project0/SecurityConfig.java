@@ -1,20 +1,20 @@
 package pl.projectarea.project0;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import pl.projectarea.project0.user.UserRepository;
-import pl.projectarea.project0.user.UserRole;
 import pl.projectarea.project0.user.UserService;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     private static final String ROLE_MODERATOR = "ROLE_MODERATOR";
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -22,27 +22,53 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String MODERATOR = "MODERATOR";
 
     @Autowired
-    public SecurityConfig(UserService userDetailsService, UserRepository userRepository) {
+    public SecurityConfig(UserService userDetailsService) {
         this.userService = userDetailsService;
-        this.userRepository = userRepository;
+
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+         auth.userDetailsService(userService);
+        //auth.authenticationProvider(daoAuthenticationProvider());
     }
+/*
+
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(UserService.passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userService);
+        return daoAuthenticationProvider;
+    }
+*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeRequests()
-                .antMatchers("/","/articles").permitAll()
-                //.antMatchers(HttpMethod.POST,"/articles").hasAnyRole(, ADMIN)
-                //.antMatchers(HttpMethod.DELETE,"/articles").hasRole(ADMIN)
-                .and()
-                .formLogin().permitAll()
-                .and().logout().permitAll()
-                .and()
-                .csrf().disable();
+        http.httpBasic()
+                .and().authorizeRequests()
+
+                .antMatchers("/","/articles","/home").permitAll()
+                .antMatchers(HttpMethod.POST,"/articles").hasAnyRole(ADMIN)
+                .antMatchers(HttpMethod.DELETE,"/articles").hasRole(ADMIN)
+                .antMatchers("/users","/register").hasRole(ADMIN)
+                .antMatchers("/alerts").authenticated()
+
+                .and().formLogin()
+                .loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
+                .defaultSuccessUrl("/home")
+                .loginPage("/login").permitAll()
+
+                .and().rememberMe()
+
+                .and().logout().logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID","remember-me" )
+                .logoutSuccessUrl("/home")
+
+                .and().csrf().disable();
+
     }
 
 

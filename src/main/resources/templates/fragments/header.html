@@ -5,31 +5,40 @@
 <head th:fragment="headerCss">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}" />
 </head>
 
 <body>
-<div th:fragment="header">
-    <h1><img th:src="@{/css/logo80.png}" style="display:inline-block; padding-right:0px; width:50px; height:50px;">ProjectArea.pl</h1>
-    <nav>
-        <ul>
-            <li>
-                <a href="/">Start</a>
-            </li>
-            <li>
-                <a href="/stocks">Kurs walut</a>
-            </li>
-            <li>
-                <a href="/alerts">Alerty</a>
-            </li>
-            <li>
-                <a href="/about">Kontakt</a>
-            </li>
-            <li>
-                <a href="/login">Logowanie</a>
-            </li>
-        </ul>
-    </nav>
+<div th:fragment="header" style="background-color: #e4edec; position: top: 0; ">
+
+
+    <div th:class="content" >
+
+        <a th:href="@{/home}"><img th:src="@{/css/logo1.gif}" width="266px" height="91px"></a>
+        <div th:class="AuthMenu">
+            <span sec:authorize="isAuthenticated()" sec:authentication="name" /><br>
+            <span>
+             <a th:href="@{/login}"  sec:authorize="isAnonymous()" th:text="Logowanie" />
+             <a th:href="@{/logout}"  sec:authorize="isAuthenticated()" th:text="Wyloguj" />
+        </span>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a th:href="@{/home}">Strona startowa</a>
+                </li>
+                <li>
+                    <a th:href="@{/stocks}">Kurs walut</a>
+                </li>
+                <li>
+                    <a th:href="@{/alerts}"  sec:authorize="isAuthenticated()">Alerty</a>
+                </li>
+                <li>
+                    <a th:href="@{/users}" sec:authorize="hasRole('ADMIN')" th:text="Użytkownicy" />
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 </body>
 </html>

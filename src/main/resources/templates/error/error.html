@@ -1,14 +1,12 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="fragments/header :: header-css">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header :: headerCss">
 </head>
-
 <body>
-
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
 
     <div class="container">
+        <p>Błąd</p>
        <!-- <div class="starter-template">
             <h1 th:text=" #{error.title} + ' ' + ${#response.getStatus()}"></h1>
             <h3 th:text="#{error.unhandled}"></h3>

@@ -22,12 +22,11 @@ public class Article {
 
     @Column(name = "short_description", length = 200)
     @NotBlank(message = "Podaj opis")
-    @NotNull
     private String shortDescription;
 
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", length = 3000)
     @NotBlank(message = "Napisz treść")
-    @NotNull
+
     private String Description;
 
     @Column(name = "local_date")

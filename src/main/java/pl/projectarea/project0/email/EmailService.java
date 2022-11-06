@@ -61,7 +61,7 @@ public class EmailService {
             helper.setSubject(subjectMsg.toString());
             helper.setFrom("projectarea@onet.pl");
             helper.setReplyTo("projectarea@onet.pl");
-            //mailSender.send(mimeMessage);
+            //mailSender.send(mimeMessage); //TODO Aktywowac wysyłanie emaili
         }catch(MessagingException e){
             LOGGER.info("Nie można wysłać wiadomości pod adress: " + email + " uzytkownika: "+ userName, e);
             e.printStackTrace();

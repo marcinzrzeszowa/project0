@@ -1,5 +1,6 @@
 package pl.projectarea.project0.user;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,22 +8,38 @@ import pl.projectarea.project0.pricealert.PriceAlert;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
+@Table(name="user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name ="username")
+    @NotBlank(message = "Podaj nazwe")
     private String username;
-    private String password;  //zamienic na tablice
+
+    @Column(name ="password")
+    @NotBlank(message = "Podaj hasło")
+    @Length(min = 3, message = "Hasło powinno zawierać minimum 3 znaki")
+    private String password;
+
+    @Column(name ="role")
+    @NotBlank(message = "Podaj role użytkownika")
     private String role;
 
-    @Email
+    @Email(message = "Podaj prawidłowy adres e-mail")
+    @Column(name ="email")
+    @NotBlank(message = "Podaj email")
     private String email;
 
-    @OneToMany(mappedBy= "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<PriceAlert> priceAlerts = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy= "user")
+    private Set<PriceAlert> priceAlerts;
 
     public User() {
     }
@@ -32,11 +49,11 @@ public class User implements UserDetails {
         this.role = role;
         this.email = email;
     }
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,7 +93,6 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(this.role)); //1 rola
     }
-
     @Override
     public String getPassword() {
         return password;
@@ -106,4 +122,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -73,7 +73,8 @@ public class ArticleController {
         articleService.updateOrSaveArticle(id,article);
         return "redirect:/home";
     }
-    @GetMapping (value = "/articles/delete/{id}")
+
+    @GetMapping("/articles/delete/{id}")
     public String deleteArticle(@PathVariable("id") Long id){
         Article article = articleService.findArticle(id);
         if(article!=null){

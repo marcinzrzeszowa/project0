@@ -29,6 +29,11 @@ public class PriceAlertService implements PriceAlertObservable{
         return priceAlertRepository.findAll();
     }
 
+    public List<PriceAlert> readUserPriceAlerts(Long id){
+        return priceAlertRepository.findByUserId(id);
+    }
+
+
     public void savePriceAlert(PriceAlert priceAlert) {
         priceAlertRepository.save(priceAlert);
         notifyChangeInPriceAlertsList(stockService);
@@ -44,6 +49,17 @@ public class PriceAlertService implements PriceAlertObservable{
     public Map<String,String> getTickers(){
         return stockTickers.getStockTickersMap();
     }
+
+/*    public String getTickerIndex(String value){
+        Map<String,String> map = stockTickers.getStockTickersMap();
+        String result ="";
+        for(Map.Entry entry: map.entrySet()){
+            if(entry.getValue().equals(value)) {
+                result = entry.getKey().toString();
+            }
+        }
+        return result;
+    }*/
 
     public PriceAlert updatePriceAlert(Long id, PriceAlert alert) {
         PriceAlert priceAlert = priceAlertRepository.findById(id)

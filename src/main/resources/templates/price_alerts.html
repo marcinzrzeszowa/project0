@@ -5,14 +5,12 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 
+<div th:class="content" id="page-container">
+    <div id="content-wrap">
 
-
-<h2>Alerty</h2>
-
-<p><a th:href="@{'/alerts/new'}">Nowy alert cenowy</a></p>
-
-<div class="center">
-    <table>
+    <h4>Alerty</h4>
+    <p><a th:href="@{'/alerts/new'}">Nowy alert cenowy</a></p>
+    <table >
         <tr>
             <th>Lp</th>
             <th>Symbol</th>
@@ -22,6 +20,7 @@
             <th>Aktywny</th>
             <th>Użytkownik</th>
             <th>Edytuj</th>
+            <th>Usuń</th>
         </tr>
 
         <tr th:each="alert: ${alerts}">
@@ -36,7 +35,11 @@
             <td><a th:href="@{'/alerts/delete/{id}'(id=${alert.getId()})}">Usuń</a></td>
         </tr>
     </table>
+    </div>
+    <footer id="footer">
+        <div th:replace="fragments/footer :: footer"></div>
+
+    </footer>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

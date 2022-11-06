@@ -15,7 +15,6 @@ import pl.projectarea.project0.article.ArticleService;
 
 @Controller
 public class AboutController {
-    private static final Logger logger = LoggerFactory.getLogger(AboutController.class);
 
     public AboutController(){
     }

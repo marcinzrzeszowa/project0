@@ -3,6 +3,7 @@ package pl.projectarea.project0.pricealert;
 import pl.projectarea.project0.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -21,16 +22,12 @@ public class PriceAlert {
     @Column(name = "id")
     private Long id;
 
-
-    // TODO Zmienic Ticker na klase
     @Column(name = "ticker")
     private String ticker;
 
     @Column(name = "description")
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Podaj opis")
     private String description;
-
 
     @Column(name = "max_price", length = 10000, precision = 10, scale = 3)
     private BigDecimal maxPrice;
@@ -38,12 +35,13 @@ public class PriceAlert {
     @Column(name = "min_price", length = 10000, precision = 10, scale = 3)
     private BigDecimal minPrice;
 
+    @NotNull
     @Column(name = "is_active")
     private Boolean isActive;
 
     //cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH}
-    @ManyToOne()
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public PriceAlert() {

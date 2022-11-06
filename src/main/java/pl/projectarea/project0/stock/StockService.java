@@ -52,15 +52,15 @@ public class StockService implements PriceAlertObserver {
         return loopDelayCounter;
     }
 
-    /*
-    @Scheduled() priceAlertCheckLoop()
-     Co robi:
-     Stany pętli dla wartości zmiennej counter:
-     counter = 0 - 2 - Przebiegi pętli potrzebny na inicjalizacji alertów cachePriceAlertList bezpośrednio z repozytorium priceAlertRepository, oraz
-                       zapisanie ich kopii w cache;
-     counter >= 2    - Rozpoczęcie porównywania cen rynkowych stocksList (z StockService) z cenami cachePriceAlertList
-     counter >= 3    - Załadowanie ceny PriceAlert z cache nasłuchiwanie zmian ceny (flaga isActualAlertList = false) z PriceAlertService
-     */
+    /**
+    @Scheduled()
+    priceAlertCheckLoop()
+    Zadanie: Tworzy pętlę do porównywania ceny waloru z giełdy, z ceną alertu dodaną przez użytkownika, w celu wysłania powiadomienia o zmianie.
+    Wartość liczbowa zmiennej counter, odzwierciedla aktualny stan pętli i dzieli ją na etapy.
+    counter = 0 - 2 - Przebiegi pętli potrzebny na inicjalizacji alertów cachePriceAlertList bezpośrednio z repozytorium priceAlertRepository, oraz zapisanie ich kopii w cache
+    counter >= 2    - Rozpoczęcie porównywania cen rynkowych stocksList (z StockService) z cenami cachePriceAlertList
+    counter >= 3    - Załadowanie ceny PriceAlert z cache i nasłuchiwanie zmian ceny z PriceAlertService (isActualAlertList = false spowoduje załadowanie cen z priceAlertRepository)
+     **/
     @Scheduled(fixedRate = 10000) //60 000 - 1min
     public void priceAlertCheckLoop() throws IOException {
         short counter = startLoopDelayCounter();
@@ -103,7 +103,6 @@ public class StockService implements PriceAlertObserver {
                 }
             }
         }
-
         sendNotification(listOfPriceAlertsToBeSent, currentPrices);
     }
 
@@ -175,30 +174,4 @@ public class StockService implements PriceAlertObserver {
     public void checkPriceAlertsList() {
         isActualAlertList = false;
     }
-
-   /* public BigDecimal findPrice(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getPrice();
-    }
-
-    public BigDecimal findLastChangeInPercent(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChangeInPercent();
-    }
-
-    public BigDecimal findChangeFrom200AvgInPercent(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChangeFromAvg200InPercent();
-    }
-    public BigDecimal findPreviousClose(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getPreviousClose();
-    }
-    public BigDecimal findGetChange(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChange();
-    }
-    public BigDecimal findDayHigh(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getDayHigh();
-    }
-    public BigDecimal findDayLow(final StockApiWrapper stock) throws IOException{
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getDayLow();
-    }
-*/
-
 }
