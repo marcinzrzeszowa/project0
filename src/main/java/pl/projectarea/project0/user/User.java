@@ -10,14 +10,16 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
 @Table(name="user")
 public class User implements UserDetails {
+
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name ="username")
@@ -26,15 +28,15 @@ public class User implements UserDetails {
 
     @Column(name ="password")
     @NotBlank(message = "Podaj hasło")
-    @Length(min = 3, message = "Hasło powinno zawierać minimum 3 znaki")
+    //@Size(min = 3, max = 50, message = "Długość hasła od 3 do 50 znaków")
+    // TODO dodac pattern
     private String password;
 
     @Column(name ="role")
-    @NotBlank(message = "Podaj role użytkownika")
     private String role;
 
-    @Email(message = "Podaj prawidłowy adres e-mail")
     @Column(name ="email")
+    @Email(message = "Podaj prawidłowy adres e-mail")
     @NotBlank(message = "Podaj email")
     private String email;
 

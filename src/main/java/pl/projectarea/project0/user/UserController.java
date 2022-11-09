@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.projectarea.project0.pricealert.PriceAlert;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -17,11 +18,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-/*
-    @GetMapping("/user/register")
-    public String registerUser(){
-            return "register";
-    }*/
 
     @GetMapping("/users")
     public String showUsers(Model model){
@@ -34,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String showUser(Model model, @PathVariable Long id){
+    public String showUser(@PathVariable Long id, Model model){
         User user = userService.findById(id);
         if (user != null) {
             model.addAttribute("user", user);
@@ -45,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{id}")
-    public String editUser(@ModelAttribute("user")User user,
+    public String editUser(@ModelAttribute("user") @Valid User user,
                            BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             //return "error/404";

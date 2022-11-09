@@ -19,14 +19,14 @@ public class StockService implements PriceAlertObserver {
 
     private final PriceAlertRepository priceAlertRepository;
     private final EmailService emailService;
-    private StockTicker stockTickers;
+    private StockTickerMap stockTickersMap;
     private List<PriceAlert> cachePriceAlertList = new LinkedList<>();
     private boolean isActualAlertList = false;
     private static short loopDelayCounter =0;
 
     @Autowired
-    public StockService(StockTicker stockTickers, PriceAlertRepository priceAlertRepository, EmailService emailService) {
-        this.stockTickers = stockTickers;
+    public StockService(StockTickerMap stockTickersMap, PriceAlertRepository priceAlertRepository, EmailService emailService) {
+        this.stockTickersMap = stockTickersMap;
         this.priceAlertRepository = priceAlertRepository;
         this.emailService = emailService;
     }
@@ -41,7 +41,7 @@ public class StockService implements PriceAlertObserver {
     }
 
     public Map<String,String> loadAvailableStocksMap(){
-        return stockTickers.getStockTickersMap();
+        return stockTickersMap.getStockTickersMap();
     }
 
     private static short startLoopDelayCounter(){
@@ -90,12 +90,10 @@ public class StockService implements PriceAlertObserver {
                     BigDecimal minPrice = priceAlert.getMinPrice();
 
                     if(maxPrice.compareTo(BigDecimal.ZERO) !=0 && stockPrice.compareTo(maxPrice) == 1 ) {
-                        //System.out.println(priceAlert.getId()+" ---//stock "+ stockPrice +" > max alert "+ maxPrice+"----- " + stockPrice.compareTo(priceAlert.getMaxPrice()));
                         listOfPriceAlertsToBeSent.add(priceAlert);
                         currentPrices.put(priceAlert.getId(),stockElement.getPrice());
                     }else if(minPrice.compareTo(BigDecimal.ZERO) !=0  && stockPrice.compareTo(minPrice) == -1){
                         if(!listOfPriceAlertsToBeSent.contains(priceAlert)){
-                            //System.out.println(priceAlert.getId()+" ----//stock "+ stockPrice +" < min alert "+ minPrice+"---- " + stockPrice.compareTo(priceAlert.getMinPrice()));
                             listOfPriceAlertsToBeSent.add(priceAlert);
                             currentPrices.put(priceAlert.getId(),stockElement.getPrice());
                         }
@@ -143,7 +141,7 @@ public class StockService implements PriceAlertObserver {
     }
 
     public List<StockApiWrapper> findAllStocks() {
-        return stockTickers.getStockTickers()
+        return stockTickersMap.getStockTickers()
                     .stream()
                     .map(this::findStock)
                     .filter(Objects::nonNull)

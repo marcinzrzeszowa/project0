@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @Controller
 public class ArticleController {
@@ -20,7 +22,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    //TODO dodac kody HTTP RESPONSE do kontrolerow
+    //TODO dodac kody HTTP RESPONSE do kontrolerow i redirect error np. 404
     @GetMapping(value = {"/","/index","/home","/articles"})
     public String showIndex(Model model){
         model.addAttribute("articles", articleService.getAllArticles());
@@ -34,10 +36,10 @@ public class ArticleController {
         return "article";
     }
 
-    @PostMapping(value = {"/articles/new"})
-    public String newArticle(@ModelAttribute("articleForm") Article article,
-                             Model model,
-                             BindingResult bindingResult) {
+    @PostMapping("/articles/new")
+    public String newArticle(@ModelAttribute("articleForm") @Valid Article article,
+                             BindingResult bindingResult,
+                             Model model) {
         if(bindingResult.hasErrors()){
             logger.error(String.valueOf(bindingResult.getFieldError()));
             model.addAttribute("action","newArticle");
@@ -63,7 +65,7 @@ public class ArticleController {
 
     @PostMapping("/articles/edit/{id}")
     public String updateArticle( @PathVariable("id") Long id,
-                                 @ModelAttribute("articleForm")Article article,
+                                 @ModelAttribute("articleForm") @Valid Article article,
                                  BindingResult bindingResult,
                                  Model model) {
         if(bindingResult.hasErrors()){

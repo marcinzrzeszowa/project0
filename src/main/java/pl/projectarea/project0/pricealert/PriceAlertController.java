@@ -1,7 +1,8 @@
 package pl.projectarea.project0.pricealert;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,20 +10,23 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.projectarea.project0.user.User;
 import pl.projectarea.project0.user.UserService;
+import pl.projectarea.project0.validator.PriceAlertValidator;
 
-import java.security.Principal;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
 public class PriceAlertController {
-
+    private static final Logger logger = LoggerFactory.getLogger(PriceAlertController.class);
     private final PriceAlertService priceAlertService;
     private final UserService userService;
+    private final PriceAlertValidator priceAlertValidator;
 
     @Autowired
-    public PriceAlertController(PriceAlertService priceAlertService, UserService userService) {
+    public PriceAlertController(PriceAlertService priceAlertService, UserService userService, PriceAlertValidator priceAlertValidator) {
         this.priceAlertService = priceAlertService;
         this.userService = userService;
+        this.priceAlertValidator = priceAlertValidator;
     }
 
     @GetMapping("/alerts")
@@ -37,7 +41,8 @@ public class PriceAlertController {
     }
 
     @GetMapping("/alerts/new")
-    public String newAlert(Model model, Authentication authentication) {
+    public String newAlert( Model model,
+                            Authentication authentication) {
             User user = userService.findByUsername(authentication.getName());
             PriceAlert priceAlert = new PriceAlert();
             priceAlert.setUser(user);
@@ -48,25 +53,27 @@ public class PriceAlertController {
     }
 
     @PostMapping("/alerts/new")
-    public String addAlert(@ModelAttribute("alertForm") PriceAlert priceAlert,
-                           BindingResult bindingResult){
+    public String addAlert(@ModelAttribute("alertForm") PriceAlert priceAlert, BindingResult bindingResult){
+        priceAlertValidator.validate(priceAlert, bindingResult);
+
     if(bindingResult.hasErrors()){
+        logger.error(String.valueOf(bindingResult.getFieldError()));
         return "price_alert_new";
     }
         priceAlertService.savePriceAlert(priceAlert);
+        logger.debug(String.format("Product with id: %s successfully created.", priceAlert.getId()));
         return "redirect:/alerts";
     }
 
     @GetMapping("/alerts/edit/{id}")
     public String editAlert(@PathVariable("id") Long id,
-                              Model model){
+                            Model model){
         PriceAlert alert = priceAlertService.findById(id);
         String tickerIndex = alert.getTicker();
         Map<String,String> tickers = priceAlertService.getTickers();
         if (alert != null){
             model.addAttribute("alertForm", alert);
-            model.addAttribute("action",
-                    "editAlert");
+            model.addAttribute("action", "editAlert");
             model.addAttribute("tickers", tickers);
             model.addAttribute("ticker", tickerIndex);
             return "price_alert";
@@ -77,7 +84,7 @@ public class PriceAlertController {
 
     @PostMapping("/alerts/edit/{id}")
     public String updateAlert(@PathVariable("id") Long id,
-                              @ModelAttribute("alertForm")PriceAlert alert,
+                              @ModelAttribute("alertForm") @Valid PriceAlert alert,
                               BindingResult bindingResult,
                               Model model){
         if(bindingResult.hasErrors()){

@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public class StockTicker {
+public class StockTickerMap {
 
-    private static Map<String, String> stockTickerMap = new HashMap();
+    private static final Map<String, String> stockTickerMap = new HashMap();
 
-    public StockTicker() {
+    public StockTickerMap() {
         stockTickerMap.put("PLN=X","PLN/USD");
         stockTickerMap.put("EURPLN=X","EUR/PLN");
         stockTickerMap.put("GBPPLN=X","GBP/PLN");
@@ -41,4 +41,5 @@ public class StockTicker {
         }
         return sb.toString();
     }
+
 }

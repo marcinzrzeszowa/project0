@@ -262,6 +262,7 @@ figure figcaption{
   font-size:0.85em;
 }
 
+
 table{
   display:inline-block;
   border-spacing:0;
@@ -306,9 +307,6 @@ table td:only-child, table th:only-child{
   background-position:0 0, 100% 0;
   background-size:2px 100%, 2px 100%;
   background-repeat:no-repeat, no-repeat;
-}
-table th{
-  line-height:1.2;
 }
 
 form{
@@ -656,16 +654,12 @@ summary::-webkit-details-marker{
   display:none;
 }
 
-noscript{
-  color:#d00000;
-}
-
 ::selection{
   background:rgba(0, 100, 193, 0.25);
 }
 
 .content {
-       width:800px;
+       width:1024px;
        margin:0 auto;
        text-align: center;
 }
@@ -701,8 +695,9 @@ noscript{
 }
 
 textarea { height: auto;
-           width: 800px;
+           width: 1024px;
 }
+
 
 
 td {
@@ -713,4 +708,17 @@ td {
 tr {
     text-align: center;
     vertical-align: middle;
+    border-bottom: 1px solid black;
+}
+
+table, tr{
+  border: 1px solid grey;
+  border-radius: 5px;
+  border-collapse: separate;
+  border-spacing: 3px;
+}
+
+.error {
+    border:solid red 1px;
+    color: red;
 }

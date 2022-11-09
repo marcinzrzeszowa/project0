@@ -11,6 +11,7 @@
 <div th:replace="fragments/header :: header"></div>
 <div th:class="contentLeft">
     <form  th:object="${articleForm}"  th:method="POST">
+
         <fieldset>
                         <!--<label th:text="#{articleForm.shortDescription}"></label>-->
             <label>Tytuł</label>
@@ -18,8 +19,9 @@
 
             <label>Treść artykułu</label>
             <textarea type="text" th:field="*{description}"  autofocus="false" rows="30" />
-
+            <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" th:class="error" />
             <input sec:authorize="hasRole('ADMIN')" th:if="${action} == 'editArticle'"  type="submit" th:action="@{/articles/edit/{id}}" th:value="Zapisz"  />
+            <input sec:authorize="hasRole('ADMIN')" th:if="${action} == 'newArticle'"  type="submit" th:action="@{/articles/new}" th:value="Dodaj"  />
         </fieldset>
     </form>
 </div>

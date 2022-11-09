@@ -33,7 +33,6 @@ class StartupData implements CommandLineRunner {
         LoadUsers();
         loadArticles();
         loadPriceAlerts();
-
     }
 
     private void LoadUsers(){
@@ -55,29 +54,42 @@ class StartupData implements CommandLineRunner {
     private void loadArticles(){
         Article a1 = new Article(
                 "Dlaczego powstała strona ProjectArea",
-                "<div class=\"contentLeft\">Witam serdecznie. <br/>  Potrzeba przećwiczenia i utrwalenia wiedzy z zakresu programowania, stała się powodem powastania tej witryny." +
-                " Szukałem tematu na ciekawy projekt, i stąd pomysł na stronę. Biorąc pod uwagę moje bardzo małe doświadczenie z zakresu programowania, projekt okazał się wymagający i czasochłonny. Strona internetowa jest funkcjonalna na zadowalającym poziome. Dlatego jestem zadowolony z osiągniętego efektu." +
-                "Chciałbym jednak zaznaczyć, że prace nad treścią witryny i formą prezentacji nadal trwają.</br>" +
-                "\tGłówną funkcjonalnością mojej aplikacji jest:</br>" +
+                "<div class=\"contentLeft\">Witam. <br/>"+
+                "Szukałem tematu na ciekawy projekt programistyczny, i stąd pomysł na stworzenie strony. Biorąc pod uwagę moje bardzo małe doświadczenie z zakresu programowania, projekt okazał się wymagający i czasochłonny. Strona internetowa jest funkcjonalna na zadowalającym poziome. Dlatego jestem zadowolony z osiągniętego efektu." +
+                " <br/> Chciałbym jednak zaznaczyć, że prace nad treścią witryny jak i formą prezentacji nadal trwają.</br>" +
+                "<br/>Główną funkcjonalnością mojej aplikacji jest:</br>" +
                 "<ul>" +
                 "   <li>" +
-                        "Pobieranie aktualnego kursów surowców, walut i kryptowalut z giełdy. Wykożystałem do tego dane, udostępniane na stronie <a href=\"https://finance.yahoo.com\">https://finance.yahoo.com</a>. Serwis daje dostęp do darmowego interfejs dla programistów, i nie nakłada dużych ograniczeń w wersji bezpłatnej." +
+                        "Pobieranie aktualnego kursów surowców, walut i kryptowalut z giełdy. Wykożystałem do tego dane, udostępniane z zewnętrznej strony. Serwis daje dostęp do darmowego interfejs dla programistów, i nie nakłada dużych ograniczeń na programistę w wersji bezpłatnej." +
                 "   </li>"+
-                        "Kolejną funkcjonalnością jest przechowywanie wiadomości tekstowych użytkowników w bazie danych. Każda wiadomośc zawiera informacje o cene, konkretnego waloru z giełdy." +
-                        "Wiadomości te mają na celu informować użutkownika o zmianie ceny rynkowaj w interesującym go zakresie."+
                 "   <li>" +
-                        "Pobieranie danych zewnętrzych z giełdy odbywa się, w regularnym odstępie czasowym ustawionym na 5 minut." +
+                        "Kolejną funkcjonalnością jest przechowywanie wiadomości tekstowych użytkowników w bazie danych. Każda wiadomośc zawiera informacje o cene, konkretnego waloru z giełdy." +
+                        " Wiadomości te mają na celu informować użutkownika o zmianie ceny rynkowaj w interesującym go zakresie."+
+                        "<br/>Pobieranie danych zewnętrzych z giełdy odbywa się, w regularnym odstępie czasowym ustawionym na 5 minut." +
                 "   </li>"+
                 "   <li>" +
                 "Następnie ceny z giełdy porównywane są z zakresem cen zapisanym przez użytkowników." +
-                "Jeżeli aktulnay kurs z giełdy przkracza wartość ceny maksymalnej, lub spada poniżej wartości ceny minimalnej, zostanie wysłana wiadomość." +
-                "Każda wiadomość powiązana jest z kontem użytkownika i zotaje przesłana na wskazany przy rejestracji adres e-mail." +
+                "<br/>Jeżeli aktulnay kurs z giełdy przkracza wartość ceny maksymalnej, lub spada poniżej wartości ceny minimalnej, zostanie wysłana wiadomość." +
+                "<br/>Każda wiadomość powiązana jest z kontem użytkownika i zotaje przesłana na wskazany przy rejestracji adres e-mail." +
                 "Następnie wiadomość przetaje być aktywna i nie jest brana pod uwagę przy kolejnym cyklu sprawdzania ceny." +
-                "Aplikacja nasłuchuje zmian w liscie wiadomości uzytkowników w celu jej aktualizacji." +
-                "Tylko zarejestrowany użytkownik ma możliwość dodawania i edycji swoich wiadomości." +
-                "Konto administratora umożliwia zarządzanie użytkownikami i wiadomościami wszystkich użytkowników.</br>" +
-                "Każdy odwiedzający stronę, ma możliwość przeglądnięcia kursów giełdowych z dostępnej listy wraz z wskaźnikami giełdowymi oraz zapoznaniem się z nowościami na stronie startowej." +
-                "Projekt powstał z wykorzystaniem języka programowania Java, oraz technologii: Spring Boot, MySQL, Thymeleaf, CSS </div>" +
+                    "<li>" +
+                        "Aplikacja nasłuchuje zmian w liscie wiadomości uzytkowników w celu jej aktualizacji." +
+                     "</li>"+
+                        "<li>" +
+                        "Tylko zarejestrowany użytkownik ma możliwość dodawania i edycji swoich wiadomości." +
+                        "</li>"+
+                        "<li>" +
+                        "Konto administratora umożliwia zarządzanie użytkownikami i wiadomościami wszystkich użytkowników.</br>" +
+                        "</li>"+
+                        "<li>" +
+                        "Każdy odwiedzający stronę, ma możliwość przeglądnięcia kursów giełdowych z dostępnej listy wraz z&nbsp;wskaźnikami giełdowymi oraz zapoznaniem się z nowościami na stronie startowej." +
+                        "</li>"+
+                        "<li>" +
+                        "Projekt powstał z wykorzystaniem języka programowania Java, oraz technologii: Spring Boot, MySQL, Thymeleaf, CSS " +
+                        "</li>"+
+                        "" +
+                        "" +
+                        "</div>" +
                 "   </li>"+
                 "</ul>");
         articleRepository.saveAll(List.of(a1));

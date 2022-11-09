@@ -18,7 +18,7 @@
 
                         <label text="Hasło">Hasło</label>
                         <input type="password" th:field="*{password}"  title="password" required/>
-
+                    <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" th:class="error" />
                     <input  type="submit" th:value="Rejestruj" />
                 </fieldset>
             </form>

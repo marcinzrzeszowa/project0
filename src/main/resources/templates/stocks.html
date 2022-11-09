@@ -6,40 +6,6 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 
-<!--<h1>Wybierz kurs z Listy</h1>
-<div th:each="stockWrapper: ${stocks}">
-    <ul>
-        <a th:href="@{'/stocks/{ticker}'(ticker=${stockWrapper})}" th:text="${stockWrapper}" ></a>
-    </ul>
-</div>-->
-
-
-
-
-<!--
-<h1>Lista kursów walut</h1>
-<div th:each="stockWrapper: ${stocksList.entrySet()}">
-    <p>
-        <span th:text="${stockWrapper.getValue()}"></span>
-        <a th:href="@{'/stocks/{ticker}'(ticker=${stockWrapper.getKey()})}">rozwiń</a>
-    </p>
-</div>
--->
-
-
-<!--<div th:each="stockElement: ${stocks}">
-  <p>
-            <h4 th:text="${stockElement.getName()}" />
-            <label th:text="'Symbol '+ ${stockElement.getSymbol()}" /> |
-            <label th:text="'Cena '+ ${stockElement.getPrice()}" /> |
-            <label th:text="'Cena wczoraj '+ ${stockElement.getPreviousClose()}" />
-             | Zmiana % <label th:text="${stockElement.getChangeInPercent() +' %'}" th:style="${stockElement.getChangeInPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
-             | Średnia 50AVG <label th:text="${stockElement.getChangeFromAvg50InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg50InPercent()  > 0 ? 'color: green;' : 'color: red;'}"/>
-            | Średnia 200AVG <label th:text="${stockElement.getChangeFromAvg200InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg200InPercent() > 0 ? 'color: green;' : 'color: red;'}"/> |
-
-             <a th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}"> dodaj alert</a>
-  </p>
-</div>-->
 <div th:class="content">
     <h4>Kursy giełdowe</h4>
     <br>
@@ -52,19 +18,19 @@
         <th>Zmiana Ceny D</th>
         <th>Średnia 50 D</th>
         <th>Średnia 200 D</th>
-        <th sec:authorize="isAuthenticated()">Alert Użytkownika</th>
+       <!-- <th sec:authorize="isAuthenticated()">Alert Użytkownika</th>-->
     </tr>
     <tr th:each="stockElement: ${stocks}">
         <td th:text="${stockElement.getName()} ?: 'null'"/>
-        <td th:text="${stockElement.getPrice()}"/>
+        <bolt><td th:text="${stockElement.getPrice()}" th:style="'color: blue;'"/></bolt>
         <td th:text="${stockElement.getSymbol()}"/>
         <td th:text="${stockElement.getPreviousClose()}"/>
         <td th:text="${stockElement.getChangeInPercent() +' %'}" th:style="${stockElement.getChangeInPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
         <td th:text="${stockElement.getChangeFromAvg50InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg50InPercent()  > 0 ? 'color: green;' : 'color: red;'}"/>
         <td th:text="${stockElement.getChangeFromAvg200InPercent() +' %'}" th:style="${stockElement.getChangeFromAvg200InPercent() > 0 ? 'color: green;' : 'color: red;'}"/>
-        <td sec:authorize="isAuthenticated()" >
+     <!--   <td sec:authorize="isAuthenticated()" >
             <a sec:authorize="isAuthenticated()"  th:href="@{'/stocks/{ticker}'(ticker=${stockElement.getSymbol()})}">Dodaj</a>
-        </td>
+        </td>-->
     </tr>
 </table>
     <br/>
@@ -72,7 +38,13 @@
    <br/>
     <lu th:class="contentLeft">
         <li>
-            Nazwa - Nazwa własna używana na stronie pomagająca zidentyfikować kurs akcji, kursu waluty lub indeksu .
+            Nazwa - Nazwa własna używana na stronie pomagająca zidentyfikować kurs akcji, kursu waluty&nbsp;lub indeksu .
+        </li>
+        <li>
+            Symbol - Symbol giełdowy akcji, kursu waluty, lub indeksu .
+        </li>
+        <li>
+            Cena Zamknięcia D - Cena w zamknięcia notowania dnia poprzedniego.
         </li>
         <li>
             Cena - Aktualna cena pobrana w momence załadowania strony.
@@ -81,10 +53,10 @@
             Zmiana Ceny D - Procentowa zniama ceny z dniowych notowań.
         </li>
         <li>
-            Średnia 50 D - Prosta średnia krocząca (SMA – Simple Moving Average). Średnia arytmetyczną z zakresu 50 dni.
+            Średnia 50 D - Prosta średnia krocząca (SMA – Simple Moving Average). Średnia arytmetyczną z&nbsp;zakresu 50 dni.
         </li>
         <li>
-            Średnia 200 D - Prosta średnia krocząca (SMA – Simple Moving Average). Średnia arytmetyczną z zakresu 200 dni.
+            Średnia 200 D - Prosta średnia krocząca (SMA – Simple Moving Average). Średnia arytmetyczną z&nbsp;zakresu 200 dni.
         </li>
     </lu>
 

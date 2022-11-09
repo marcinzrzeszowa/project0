@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.projectarea.project0.user.User;
 import pl.projectarea.project0.user.UserService;
 
+import javax.validation.Valid;
+
 @Controller
 public class LoginController {
     private final UserService userService;
@@ -26,7 +28,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String registration(@ModelAttribute("userForm") User userForm,
+    public String registration(@ModelAttribute("userForm") @Valid User userForm,
                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "register";
@@ -36,11 +38,8 @@ public class LoginController {
         return "redirect:/users";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login") //TODO login validation
     public String login( ){
-      /*  if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-        */
         return "login";
     }
 

@@ -3,9 +3,7 @@ package pl.projectarea.project0.pricealert;
 import pl.projectarea.project0.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 /*
@@ -23,16 +21,21 @@ public class PriceAlert {
     private Long id;
 
     @Column(name = "ticker")
+    @NotNull(message = "Wybierz symbol z listy")
     private String ticker;
 
     @Column(name = "description")
     @NotBlank(message = "Podaj opis")
     private String description;
 
-    @Column(name = "max_price", length = 10000, precision = 10, scale = 3)
+    @Column(name = "max_price", length = 1000, precision = 10, scale = 3)
+    @Min(value=0, message="Cena maksymalna jest za mała")
+    @Max(value=100000, message="Cena maksymalna jest za duża")  //TODO sprawdzic dlugosc jaka ma byc z precyzja, DoDac cena max > cena min validator, ticker
     private BigDecimal maxPrice;
 
-    @Column(name = "min_price", length = 10000, precision = 10, scale = 3)
+    @Column(name = "min_price", length = 1000, precision = 10, scale = 3)
+    @Min(value=0, message="Cena minimalna jest za mała")
+    @Max(value=1000000, message="Cena minimalna jest za duża")
     private BigDecimal minPrice;
 
     @NotNull
@@ -127,4 +130,5 @@ public class PriceAlert {
                 ", user=" + user +
                 '}';
     }
+
 }

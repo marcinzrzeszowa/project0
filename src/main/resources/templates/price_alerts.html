@@ -31,6 +31,7 @@
             <td th:text="${alert.getMinPrice() == 0 ? ' - ' : alert.getMinPrice()}"/>
             <td th:text="${alert.getActive()}"/>
             <td th:text="${alert.getUser().getUsername()}"/>
+
             <td><a th:href="@{'/alerts/edit/{id}'(id=${alert.getId()})}">Edytuj</a></td>
             <td><a th:href="@{'/alerts/delete/{id}'(id=${alert.getId()})}">Usuń</a></td>
         </tr>

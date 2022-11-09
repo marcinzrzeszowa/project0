@@ -56,6 +56,7 @@ My HTML
                             th:text="${tickers.get(key)}"></option>
                 </select>
             </label>
+            <p th:class="error"  th:if="${#fields.hasErrors('ticker')}" th:errors="*{ticker}"></p>
 
             <label>Opis
                 <input type="text" th:field="*{description}"/>
@@ -71,9 +72,9 @@ My HTML
             </label>
                 <input  type="hidden" th:field="*{user}"/>
             <br>
+            <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" th:class="error" />
             <input th:if="${action} == 'newAlert'"   type="submit" th:action="@{/alerts/new}"  th:value="Dodaj" />
             <input th:if="${action} == 'editAlert'"  type="submit" th:action="@{/alerts/edit/{id}}" th:value="Zapisz"  />
-
 
         </fieldset>
     </form>

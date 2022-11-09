@@ -3,7 +3,7 @@ package pl.projectarea.project0.pricealert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.projectarea.project0.stock.StockService;
-import pl.projectarea.project0.stock.StockTicker;
+import pl.projectarea.project0.stock.StockTickerMap;
 
 import java.util.List;
 import java.util.Map;
@@ -13,13 +13,13 @@ public class PriceAlertService implements PriceAlertObservable{
 
     public final PriceAlertRepository priceAlertRepository;
     private final StockService stockService;
-    private final StockTicker stockTickers;
+    private final StockTickerMap stockTickersMap;
 
     @Autowired
-    public PriceAlertService(PriceAlertRepository priceAlertRepository, StockService stockService, StockTicker stockTickers) {
+    public PriceAlertService(PriceAlertRepository priceAlertRepository, StockService stockService, StockTickerMap stockTickersMap) {
         this.priceAlertRepository = priceAlertRepository;
         this.stockService = stockService;
-        this.stockTickers = stockTickers;
+        this.stockTickersMap = stockTickersMap;
     }
 
     public PriceAlert findById(Long id){
@@ -47,11 +47,11 @@ public class PriceAlertService implements PriceAlertObservable{
     }
 
     public Map<String,String> getTickers(){
-        return stockTickers.getStockTickersMap();
+        return stockTickersMap.getStockTickersMap();
     }
 
-/*    public String getTickerIndex(String value){
-        Map<String,String> map = stockTickers.getStockTickersMap();
+    public String getTicker(String value){
+        Map<String,String> map = stockTickersMap.getStockTickersMap();
         String result ="";
         for(Map.Entry entry: map.entrySet()){
             if(entry.getValue().equals(value)) {
@@ -59,7 +59,7 @@ public class PriceAlertService implements PriceAlertObservable{
             }
         }
         return result;
-    }*/
+    }
 
     public PriceAlert updatePriceAlert(Long id, PriceAlert alert) {
         PriceAlert priceAlert = priceAlertRepository.findById(id)

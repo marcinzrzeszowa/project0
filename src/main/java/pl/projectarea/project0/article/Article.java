@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -20,13 +21,14 @@ public class Article {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "short_description", length = 200)
+    @Column(name = "short_description", length = 150)
+    @Size(min = 10, max = 150, message = "Długość Opisu powinna się zawierać od 10 do 150 znaków")
     @NotBlank(message = "Podaj opis")
     private String shortDescription;
 
     @Column(name = "description", length = 3000)
+    @Size(min = 10, max = 3000, message = "Długość tekstu powinna się zawierać od 10 do 3.000 znaków")
     @NotBlank(message = "Napisz treść")
-
     private String Description;
 
     @Column(name = "local_date")
