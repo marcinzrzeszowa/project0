@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import pl.projectarea.project0.pricealert.PriceAlert;
+import pl.projectarea.project0.price_alert.PriceAlert;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -21,6 +21,8 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final static Logger LOGGER= LoggerFactory.getLogger(EmailService.class);
+    private final String SEND_FROM_EMAIL = "projectarea@onet.pl";
+    private final String SEND_REPLY_TO_EMAIL = "projectarea@onet.pl";
 
     @Autowired
     public EmailService(JavaMailSender javaMailSender) {
@@ -33,7 +35,7 @@ public class EmailService {
         String userName = priceAlert.getUser().getUsername();
         String email = priceAlert.getUser().getEmail();
         String description = priceAlert.getDescription();
-        String ticker = priceAlert.getTicker();
+        String ticker = priceAlert.getTicker().getName();
         double price = currentPrice.doubleValue();
         double maxPrice = priceAlert.getMaxPrice().doubleValue();
         double minPrice = priceAlert.getMinPrice().doubleValue();
@@ -59,8 +61,8 @@ public class EmailService {
             helper.setText(message,true);
             helper.setTo(email);
             helper.setSubject(subjectMsg.toString());
-            helper.setFrom("projectarea@onet.pl");
-            helper.setReplyTo("projectarea@onet.pl");
+            helper.setFrom(SEND_FROM_EMAIL);
+            helper.setReplyTo(SEND_REPLY_TO_EMAIL);
             //mailSender.send(mimeMessage); //TODO Aktywowac wysyłanie emaili
         }catch(MessagingException e){
             LOGGER.info("Nie można wysłać wiadomości pod adress: " + email + " uzytkownika: "+ userName, e);

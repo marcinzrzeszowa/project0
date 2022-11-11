@@ -1,4 +1,4 @@
-package pl.projectarea.project0.pricealert;
+package pl.projectarea.project0.price_alert;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.projectarea.project0.stock_ticker.StockTicker;
+import pl.projectarea.project0.stock_ticker.StockTickerService;
 import pl.projectarea.project0.user.User;
 import pl.projectarea.project0.user.UserService;
 import pl.projectarea.project0.validator.PriceAlertValidator;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -41,41 +44,36 @@ public class PriceAlertController {
     }
 
     @GetMapping("/alerts/new")
-    public String newAlert( Model model,
-                            Authentication authentication) {
+    public String newAlert( Model model, Authentication authentication) {
             User user = userService.findByUsername(authentication.getName());
             PriceAlert priceAlert = new PriceAlert();
             priceAlert.setUser(user);
-            model.addAttribute("alertForm", priceAlert);
-            model.addAttribute("action", "newAlert");
-            model.addAttribute("tickers", priceAlertService.getTickers());
+            List<StockTicker> tickers = priceAlertService.getTickers();
+                model.addAttribute("alertForm", priceAlert);
+                model.addAttribute("tickers", tickers);
         return "price_alert_new";
     }
 
     @PostMapping("/alerts/new")
     public String addAlert(@ModelAttribute("alertForm") PriceAlert priceAlert, BindingResult bindingResult){
         priceAlertValidator.validate(priceAlert, bindingResult);
-
-    if(bindingResult.hasErrors()){
-        logger.error(String.valueOf(bindingResult.getFieldError()));
-        return "price_alert_new";
-    }
-        priceAlertService.savePriceAlert(priceAlert);
-        logger.debug(String.format("Product with id: %s successfully created.", priceAlert.getId()));
-        return "redirect:/alerts";
+            if(bindingResult.hasErrors()){
+                logger.error(String.valueOf(bindingResult.getFieldError()));
+                return "price_alert_new";
+            }
+            priceAlertService.savePriceAlert(priceAlert);
+            logger.debug(String.format("Product with id: %s successfully created.", priceAlert.getId()));
+            return "redirect:/alerts";
     }
 
     @GetMapping("/alerts/edit/{id}")
     public String editAlert(@PathVariable("id") Long id,
                             Model model){
         PriceAlert alert = priceAlertService.findById(id);
-        String tickerIndex = alert.getTicker();
-        Map<String,String> tickers = priceAlertService.getTickers();
+        List<StockTicker> tickers = priceAlertService.getTickers();
         if (alert != null){
             model.addAttribute("alertForm", alert);
-            model.addAttribute("action", "editAlert");
             model.addAttribute("tickers", tickers);
-            model.addAttribute("ticker", tickerIndex);
             return "price_alert";
         }else {
             return "error/404";

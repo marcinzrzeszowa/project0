@@ -1,6 +1,4 @@
-package pl.projectarea.project0.pricealert;
-
-import java.util.List;
+package pl.projectarea.project0.price_alert;
 
 public interface PriceAlertObserver {
     void checkPriceAlertsList();

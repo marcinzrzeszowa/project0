@@ -1,4 +1,4 @@
-package pl.projectarea.project0.stock;
+package pl.projectarea.project0.stock_ticker;
 
 import org.springframework.stereotype.Component;
 import java.util.HashMap;

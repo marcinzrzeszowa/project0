@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pl.projectarea.project0.email.EmailService;
-import pl.projectarea.project0.pricealert.PriceAlert;
-import pl.projectarea.project0.pricealert.PriceAlertObserver;
-import pl.projectarea.project0.pricealert.PriceAlertRepository;
+import pl.projectarea.project0.price_alert.PriceAlert;
+import pl.projectarea.project0.price_alert.PriceAlertObserver;
+import pl.projectarea.project0.price_alert.PriceAlertRepository;
+import pl.projectarea.project0.stock_ticker.StockTickerMap;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -128,7 +129,7 @@ public class StockService implements PriceAlertObserver {
         Set<String> set = new HashSet<>();
         for(PriceAlert alert: cachePriceAlertList){
             if(!set.contains(alert.getTicker())){
-                set.add(alert.getTicker());
+                set.add(alert.getTicker().getSymbol());
             }
         }
         return set;

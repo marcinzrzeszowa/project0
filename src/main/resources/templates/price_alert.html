@@ -11,13 +11,13 @@
         <fieldset>
             <label>Symbol kursu
                 <select th:field="*{ticker}">
-                    <option th:value="${ticker}" th:text=${tickers.get(ticker)} selected></option>
-                    <option th:each="key: ${tickers.keySet()}"
-                            th:value="${key}"
-                            th:text="${tickers.get(key)}"></option>
+                    <option th:value="*{ticker}" th:text="*{ticker.getName()}" selected></option>
+                        <option th:each="obj: ${tickers}"
+                                th:value="${obj.getId()}"
+                                th:text="${obj.getName()}">
+                        </option>
                 </select>
             </label>
-
             <label>Opis
                 <input type="text" th:field="*{description}"/>
             </label>
@@ -32,8 +32,8 @@
             </label>
             <br>
             <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" th:class="error" />
-            <input th:if="${action} == 'newAlert'"   type="submit" th:action="@{/alerts/new}"  th:value="Dodaj" />
-            <input th:if="${action} == 'editAlert'"  type="submit" th:action="@{/alerts/edit/{id}}" th:value="Zapisz"  />
+            <input type="submit" th:action="@{/alerts/edit/{id}}" th:value="Zapisz"  />
+            <a href="/alerts"/>Wstecz</a>
         </fieldset>
     </form>
 

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import pl.projectarea.project0.pricealert.PriceAlert;
-import pl.projectarea.project0.pricealert.PriceAlertService;
+import pl.projectarea.project0.price_alert.PriceAlert;
+import pl.projectarea.project0.price_alert.PriceAlertService;
 
 @Component
 public class PriceAlertValidator implements Validator {
@@ -24,15 +24,9 @@ public class PriceAlertValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        PriceAlert priceAlert = (PriceAlert) target;
 
         //Not empty ticker
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"ticker", "error.price-alert.ticker");
-
-        //ticker contains in Tickers Map
-        if(priceAlertService.getTicker(priceAlert.getTicker()) != null){
-            errors.rejectValue("ticker", "error.price-alert.no-ticker");
-        }
+        ValidationUtils.rejectIfEmpty(errors,"ticker", "error.price-alert.ticker");
 
     }
 }

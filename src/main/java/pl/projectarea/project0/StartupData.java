@@ -5,8 +5,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.projectarea.project0.article.Article;
 import pl.projectarea.project0.article.ArticleRepository;
-import pl.projectarea.project0.pricealert.PriceAlert;
-import pl.projectarea.project0.pricealert.PriceAlertRepository;
+import pl.projectarea.project0.price_alert.PriceAlert;
+import pl.projectarea.project0.price_alert.PriceAlertRepository;
+import pl.projectarea.project0.stock_ticker.StockTicker;
+import pl.projectarea.project0.stock_ticker.StockTickerRepository;
+import pl.projectarea.project0.stock_ticker.TickerType;
 import pl.projectarea.project0.user.User;
 import pl.projectarea.project0.user.UserRepository;
 import pl.projectarea.project0.user.UserService;
@@ -20,34 +23,49 @@ class StartupData implements CommandLineRunner {
     private final ArticleRepository articleRepository;
     private final PriceAlertRepository priceAlertRepository;
     private final UserRepository userRepository;
+    private final StockTickerRepository stockTickerRepository;
 
     @Autowired
-    public StartupData(ArticleRepository articleRepository, PriceAlertRepository priceAlertRepository, UserRepository userRepository) {
+    public StartupData(ArticleRepository articleRepository, PriceAlertRepository priceAlertRepository, UserRepository userRepository, StockTickerRepository stockTickerRepository) {
         this.articleRepository = articleRepository;
         this.priceAlertRepository = priceAlertRepository;
         this.userRepository = userRepository;
+        this.stockTickerRepository = stockTickerRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        LoadUsers();
         loadArticles();
-        loadPriceAlerts();
+        Load();
     }
 
-    private void LoadUsers(){
+    private void Load(){
+
+        StockTicker st0 = new StockTicker("PLN=X","PLN/USD", TickerType.WALUTA);
+        StockTicker st1 = new StockTicker("EURPLN=X","EUR/PLN", TickerType.WALUTA);
+        StockTicker st2 = new StockTicker("GBPPLN=X","GBP/PLN", TickerType.WALUTA);
+        StockTicker st3 = new StockTicker("CHFPLN=X","CHF/PLN", TickerType.WALUTA);
+        StockTicker st4 = new StockTicker("EUR=X","USD/EUR", TickerType.WALUTA);
+        StockTicker st5 = new StockTicker("GC=F","Złoto/USD", TickerType.SUROWIEC);
+        StockTicker st6 = new StockTicker("SI=F","Srebro/USD", TickerType.SUROWIEC);
+        StockTicker st7 = new StockTicker("BZ=F","Ropa/USD", TickerType.SUROWIEC);
+        StockTicker st8 = new StockTicker("^GSPC","S&P500", TickerType.INDEX);
+        StockTicker st9 = new StockTicker("BTC-USD","BTC/USD", TickerType.KRYPTOWALUTA);
+        StockTicker st10 = new StockTicker("ETH-USD","ETH/USD", TickerType.KRYPTOWALUTA);
+        StockTicker st11 = new StockTicker("DOT-USD","DOT/USD", TickerType.KRYPTOWALUTA);
+        stockTickerRepository.saveAll(List.of(st0,st1,st2,st3,st4,st5,st6,st7,st8,st9,st10,st11));
 
         User user1 = new User("Admin",UserService.passwordEncoder().encode("123"),"ROLE_ADMIN", "marcinzbrzozowa@gmail.com");
         User user2 = new User("test", UserService.passwordEncoder().encode("test"),"ROLE_MODERATOR", "test@gmail.com");
         userRepository.save(user1);
         userRepository.save(user2);
 
-        PriceAlert pa1 = new PriceAlert("BTC-USD", "Opis1",new BigDecimal(23000),  new BigDecimal(20000), true, user1 );
-        PriceAlert pa2 = new PriceAlert("BTC-USD","Cena powyzej ceny " ,new BigDecimal(18000),true, user1 );
-        PriceAlert pa3 = new PriceAlert("PLN=X","Cena poniżej ceny " ,true, new BigDecimal(5), user2 );
-        PriceAlert pa4 = new PriceAlert("PLN=X","Opis 4 ",true, new BigDecimal(4), user2 );
-        PriceAlert pa5 = new PriceAlert("EURPLN=X","Opis 5",new BigDecimal(7),new BigDecimal(6),true, user2 );
-        PriceAlert pa6 = new PriceAlert("EURPLN=X","Opis 6",true,new BigDecimal(5), user1 );
+        PriceAlert pa1 = PriceAlert.newObj(st9, user1,"Cena BTC poza zakresem cenowym", new BigDecimal(23000), new BigDecimal(20000));
+        PriceAlert pa2 = PriceAlert.newObjJustMinPrice(st9,user1,new BigDecimal(16000),"Cena BTC spadła !");
+        PriceAlert pa3 = PriceAlert.newObjJustMaxPrice(st0,user2,"Cena USD drastycznie wzrosła ! ",new BigDecimal(5));
+        PriceAlert pa4 = PriceAlert.newObj(st5,user2,"Złoto poza zakresem",new BigDecimal(1800), new BigDecimal(1700));
+        PriceAlert pa5 = PriceAlert.newObjJustMinPrice(st1, user1, new BigDecimal(4),"EUR spada");
+        PriceAlert pa6 = PriceAlert.newObj(st1, user1,"EUR poza zakresem",  new BigDecimal(4.5),  new BigDecimal(4));
         priceAlertRepository.saveAll(List.of(pa1,pa2,pa3,pa4,pa5,pa6));
     }
 
@@ -95,6 +113,4 @@ class StartupData implements CommandLineRunner {
         articleRepository.saveAll(List.of(a1));
     }
 
-    private void loadPriceAlerts(){
-    }
 }
