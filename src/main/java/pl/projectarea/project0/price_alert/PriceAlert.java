@@ -25,12 +25,12 @@ public class PriceAlert {
     @NotBlank(message = "Podaj opis")
     private String description;
 
-    @Column(name = "max_price", length = 1000, precision = 10, scale = 3)
+    @Column(name = "max_price", length = 100000, precision = 10, scale = 3)
     @Min(value=0, message="Cena maksymalna jest za mała")
-    @Max(value=100000, message="Cena maksymalna jest za duża")  //TODO sprawdzic dlugosc jaka ma byc z precyzja, DoDac cena max > cena min validator, ticker
+    @Max(value=100000, message="Cena maksymalna jest za duża")  //TODO sprawdzic dlugosc jaka ma byc z precyzja, DoDac cena max > cena min validator,
     private BigDecimal maxPrice;
 
-    @Column(name = "min_price", length = 1000, precision = 10, scale = 3)
+    @Column(name = "min_price", length = 100000, precision = 10, scale = 3)
     @Min(value=0, message="Cena minimalna jest za mała")
     @Max(value=1000000, message="Cena minimalna jest za duża")
     private BigDecimal minPrice;

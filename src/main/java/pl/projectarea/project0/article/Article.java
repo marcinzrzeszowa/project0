@@ -21,8 +21,8 @@ public class Article {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "short_description", length = 150)
-    @Size(min = 10, max = 150, message = "Długość Opisu powinna się zawierać od 10 do 150 znaków")
+    @Column(name = "short_description", length = 400)
+    @Size(min = 10, max = 400, message = "Długość Opisu powinna się zawierać od 10 do 150 znaków")
     @NotBlank(message = "Podaj opis")
     private String shortDescription;
 
@@ -36,7 +36,6 @@ public class Article {
     private LocalDate localDate;
 
     public Article() {
-
         this.localDate = LocalDate.now();
     }
     public Article(String shortDescription, String description) {

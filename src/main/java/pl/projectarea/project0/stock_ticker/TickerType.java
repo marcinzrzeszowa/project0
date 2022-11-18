@@ -4,5 +4,6 @@ public enum TickerType {
     WALUTA,
     KRYPTOWALUTA,
     INDEX,
-    SUROWIEC
+    SUROWIEC,
+    AKCJA
 }

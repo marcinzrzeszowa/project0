@@ -48,19 +48,8 @@ public class PriceAlertService implements PriceAlertObservable{
     }
 
     public List<StockTicker> getTickers(){
-        return stockTickerService.readAllStockTickers();
+        return stockTickerService.getAllStockTickers();
     }
-
-   /* public String getTickerName(String key){
-        Map<String,String> map = stockTickersMap.getStockTickersMap();
-        String result=null;
-        for(Map.Entry<String,String> entry: map.entrySet()){
-            if(entry.getKey().equals(key)) {
-                result = entry.getValue();
-            }
-        }
-        return result;
-    }*/
 
     public PriceAlert updatePriceAlert(Long id, PriceAlert alert) {
         PriceAlert priceAlert = priceAlertRepository.findById(id)

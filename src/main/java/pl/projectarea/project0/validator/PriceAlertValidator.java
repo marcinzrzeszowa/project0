@@ -18,15 +18,20 @@ public class PriceAlertValidator implements Validator {
     }
 
     @Override
-    public boolean supports(Class<?> clazz) {
-        return PriceAlert.class.equals(clazz);
+    public boolean supports(Class<?> paclass) {
+        return PriceAlert.class.equals(paclass);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
+        PriceAlert priceAlert = (PriceAlert)target;
 
         //Not empty ticker
-        ValidationUtils.rejectIfEmpty(errors,"ticker", "error.price-alert.ticker");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"ticker", "error.price-alert.ticker");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"description","error.price-alert.description");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"maxPrice", "error.price-alert.maxPrice");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"minPrice", "error.price-alert.minPrice");
+
 
     }
 }

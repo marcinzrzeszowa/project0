@@ -18,17 +18,7 @@ public class StockTickerService {
         return stockTickerRepository.findById(id).stream().findFirst().orElseThrow(()->new RuntimeException("Nie ma takiego symbolu"));
     }
 
-    public List<StockTicker> readAllStockTickers(){
+    public List<StockTicker> getAllStockTickers(){
         return stockTickerRepository.findAll();
-    }
-
-    public void savePriceAlert(StockTicker stockTicker) {
-        stockTickerRepository.save(stockTicker);
-    }
-
-    public void deletePriceAlert(Long id){
-        if(stockTickerRepository.existsById(id)){
-            stockTickerRepository.deleteById(id);
-        }
     }
 }

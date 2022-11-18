@@ -59,30 +59,32 @@ My HTML
     <form method="post" th:object="${alertForm}">
         <fieldset>
             <label>Symbol kursu
-                <select th:field="*{ticker}">
+                <select th:field="*{ticker}" name="ticker">
                     <option th:each="obj: ${tickers}"
                             th:value="${obj.getId()}"
                             th:text="${obj.getName()}">
                     </option>
                 </select>
+                <p th:if="${#fields.hasErrors('ticker')}" th:errors="*{ticker}"></p>
             </label>
-           <!-- <p th:class="error"  th:if="${#fields.hasErrors('ticker')}" th:errors="*{ticker}"></p>-->
-
             <label>Opis
-                <input type="text" th:field="*{description}"/>
+                <input type="text" th:field="*{description}" name="description"/>
+                <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:class="error"></p>
             </label>
             <label>Cena maksymalna
-                <input type="number" th:field="*{maxPrice}"/>
+                <input type="number" th:field="*{maxPrice}" name="maxPrice"/>
+                <p th:if="${#fields.hasErrors('description')}" th:errors="*{maxPrice}" placeholder="double" th:class="error"></p>
             </label>
             <label>Cena minimalna
-                <input type="number" th:field="*{minPrice}"/>
+                <input type="number" th:field="*{minPrice}" name="minPrice" placeholder="double" />
+                <p th:if="${#fields.hasErrors('minPrice')}" th:errors="*{minPrice}" th:class="error"></p>
             </label>
             <label>Alert aktywny
-                <input  type="checkbox" th:field="*{Active}"/>
+                <input  type="checkbox" th:field="*{Active}" name="isActive" placeholder="boolean" th:class="error"/>
             </label>
-                <input  type="hidden" th:field="*{user}"/>
+                <input  type="hidden" th:field="*{user}" name="user"/>
+                <p th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></p>
             <br>
-            <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" th:class="error" />
             <input type="submit" th:action="@{/alerts/new}"  th:value="Dodaj" />
             <a href="/alerts"/>Wstecz</a>
         </fieldset>

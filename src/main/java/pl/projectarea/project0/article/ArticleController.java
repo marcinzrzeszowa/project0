@@ -29,6 +29,18 @@ public class ArticleController {
         return "home";
     }
 
+    @GetMapping("/articles/{id}")
+    public String editProduct(@PathVariable("id") Long articleId,
+                              Model model){
+        Article article = articleService.findArticle(articleId);
+        if (article != null){
+            model.addAttribute("article", article);
+            return "article_details";
+        }else {
+            return "error/404";
+        }
+    }
+
     @GetMapping("/articles/new")
     public String newArticle(Model model) {
         model.addAttribute("articleForm", new Article());
@@ -51,7 +63,7 @@ public class ArticleController {
     }
     
     @GetMapping("/articles/edit/{id}")
-    public String editProduct(@PathVariable("id") Long articleId,
+    public String editArticle(@PathVariable("id") Long articleId,
                               Model model){
         Article article = articleService.findArticle(articleId);
         if (article != null){

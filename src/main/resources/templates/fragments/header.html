@@ -5,30 +5,36 @@
 <head th:fragment="headerCss">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style2.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 
 <body>
-<div th:fragment="header" style="background-color: #e4edec; position: top: 0; ">
 
+<div th:fragment="header"  class="headerMenu" >
+    <div th:class="contentCenter">
+    <nav class="menu-container">
+        <!-- burger menu -->
+        <input type="checkbox" aria-label="Toggle menu" />
+        <span></span>
+        <span></span>
+        <span></span>
 
-    <div th:class="content" >
+        <!-- logo -->
+        <a th:href="@{/home}" class="menu-logo">
+            <img th:src="@{/css/logo100w.png}" />
+        </a>
 
-        <a th:href="@{/home}"><img th:src="@{/css/logo1.gif}" width="266px" height="91px"></a>
-        <div th:class="AuthMenu">
-            <span sec:authorize="isAuthenticated()" sec:authentication="name" /><br>
-            <span>
-             <a th:href="@{/login}"  sec:authorize="isAnonymous()" th:text="Logowanie" />
-             <a th:href="@{/logout}"  sec:authorize="isAuthenticated()" th:text="Wyloguj" />
-        </span>
-        </div>
-        <nav>
+        <!-- menu items -->
+        <div class="menu">
             <ul>
                 <li>
-                    <a th:href="@{/home}">Strona startowa</a>
+
+            </li>
+                <li>
+                    <a th:href="@{/home}">Start</a>
                 </li>
                 <li>
-                    <a th:href="@{/stocks}">Kurs walut</a>
+                    <a th:href="@{/stocks}">Kursy</a>
                 </li>
                 <li>
                     <a th:href="@{/alerts}"  sec:authorize="isAuthenticated()">Alerty</a>
@@ -37,7 +43,17 @@
                     <a th:href="@{/users}" sec:authorize="hasRole('ADMIN')" th:text="Użytkownicy" />
                 </li>
             </ul>
-        </nav>
+            <ul>
+                <li>
+                    <div th:class="AuthMenu">
+                        <div sec:authorize="isAuthenticated()" sec:authentication="name"> </div>
+                    <a th:href="@{/logout}"  sec:authorize="isAuthenticated()" th:text="Wyloguj" />
+                    <a th:href="@{/login}"  sec:authorize="isAnonymous()" th:text="Logowanie" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
     </div>
 </div>
 </body>

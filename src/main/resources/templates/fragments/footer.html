@@ -3,10 +3,12 @@
 <head>
 </head>
 <body>
-<div th:fragment="footer" th:class="content" style="background-color: #e4edec" th:id="footer">
-            <span text="copyright"> © 2022 Marcin Janowski.  All rights reserved
-                    <a href="/about">Kontakt</a>
-            </span>
+<!--<div class="push"></div>-->
+<div th:fragment="footer" th:id="footer" >
+    <img th:src="@{/css/logo100.png}" class="logoFooter">
+    <p class="contentCenter">
+      © 2022 Marcin Janowski <a href="/about">Kontakt</a>
+    </p>
 </div>
 </body>
 </html>

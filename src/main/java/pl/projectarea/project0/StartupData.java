@@ -53,7 +53,8 @@ class StartupData implements CommandLineRunner {
         StockTicker st9 = new StockTicker("BTC-USD","BTC/USD", TickerType.KRYPTOWALUTA);
         StockTicker st10 = new StockTicker("ETH-USD","ETH/USD", TickerType.KRYPTOWALUTA);
         StockTicker st11 = new StockTicker("DOT-USD","DOT/USD", TickerType.KRYPTOWALUTA);
-        stockTickerRepository.saveAll(List.of(st0,st1,st2,st3,st4,st5,st6,st7,st8,st9,st10,st11));
+        StockTicker st12 = new StockTicker("TSLA","Tesla, Inc.", TickerType.AKCJA);
+        stockTickerRepository.saveAll(List.of(st0,st1,st2,st3,st4,st5,st6,st7,st8,st9,st10,st11,st12));
 
         User user1 = new User("Admin",UserService.passwordEncoder().encode("123"),"ROLE_ADMIN", "marcinzbrzozowa@gmail.com");
         User user2 = new User("test", UserService.passwordEncoder().encode("test"),"ROLE_MODERATOR", "test@gmail.com");
@@ -71,14 +72,13 @@ class StartupData implements CommandLineRunner {
 
     private void loadArticles(){
         Article a1 = new Article(
-                "Dlaczego powstała strona ProjectArea",
-                "<div class=\"contentLeft\">Witam. <br/>"+
-                "Szukałem tematu na ciekawy projekt programistyczny, i stąd pomysł na stworzenie strony. Biorąc pod uwagę moje bardzo małe doświadczenie z zakresu programowania, projekt okazał się wymagający i czasochłonny. Strona internetowa jest funkcjonalna na zadowalającym poziome. Dlatego jestem zadowolony z osiągniętego efektu." +
-                " <br/> Chciałbym jednak zaznaczyć, że prace nad treścią witryny jak i formą prezentacji nadal trwają.</br>" +
+                "Witam.<br/> Strona powstała w celu poszerzenia wiedzy z zakresu programowania.<br/> Wykorzystałem jezyk programowania Java, frameworka Spring oraz inne powiązane technologie.",
+                "Szukałem tematu na ciekawy projekt programistyczny, i stąd pomysł na stworzenie strony z kursami giełdowymi. Strona internetowa jest funkcjonalna na zadowalającym poziome. Dlatego jestem zadowolony z osiągniętego efektu." +
+                " <br/> Chciałbym jednak zaznaczyć, że prace nad treścią witryny, jak i formą prezentacji nadal trwają.</br>" +
                 "<br/>Główną funkcjonalnością mojej aplikacji jest:</br>" +
                 "<ul>" +
                 "   <li>" +
-                        "Pobieranie aktualnego kursów surowców, walut i kryptowalut z giełdy. Wykożystałem do tego dane, udostępniane z zewnętrznej strony. Serwis daje dostęp do darmowego interfejs dla programistów, i nie nakłada dużych ograniczeń na programistę w wersji bezpłatnej." +
+                        "Pobieranie aktualnego kursów surowców, indeksów, akcji, walut i kryptowalut z giełdy. Wykożystałem do tego dane, udostępniane z zewnętrznej strony. Serwis daje dostęp do darmowego interfejs dla programistów, i nie nakłada dużych ograniczeń na programistę w wersji bezpłatnej." +
                 "   </li>"+
                 "   <li>" +
                         "Kolejną funkcjonalnością jest przechowywanie wiadomości tekstowych użytkowników w bazie danych. Każda wiadomośc zawiera informacje o cene, konkretnego waloru z giełdy." +

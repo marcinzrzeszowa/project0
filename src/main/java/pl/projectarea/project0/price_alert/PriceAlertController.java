@@ -55,10 +55,13 @@ public class PriceAlertController {
     }
 
     @PostMapping("/alerts/new")
-    public String addAlert(@ModelAttribute("alertForm") PriceAlert priceAlert, BindingResult bindingResult){
+    public String addAlert(@ModelAttribute("alertForm") PriceAlert priceAlert, BindingResult bindingResult, Model model){
         priceAlertValidator.validate(priceAlert, bindingResult);
             if(bindingResult.hasErrors()){
                 logger.error(String.valueOf(bindingResult.getFieldError()));
+                List<StockTicker> tickers = priceAlertService.getTickers();
+                model.addAttribute("alertForm", priceAlert);
+                model.addAttribute("tickers", tickers);
                 return "price_alert_new";
             }
             priceAlertService.savePriceAlert(priceAlert);
@@ -87,7 +90,7 @@ public class PriceAlertController {
                               Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("action", "editAlert");
-            return "price_alerts";
+            return "price_alert";
         }
         priceAlertService.updatePriceAlert(id, alert);
         return "redirect:/alerts";

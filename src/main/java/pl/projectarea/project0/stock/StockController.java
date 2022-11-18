@@ -21,7 +21,6 @@ public class StockController {
 
     @GetMapping(value = {"/stocks"})
     public String getAvailableStocks(Model model){
-        model.addAttribute("stocksList", stockService.loadAvailableStocksMap());
         model.addAttribute("stocks", stockService.findAllStocks());
         return "stocks";
     }

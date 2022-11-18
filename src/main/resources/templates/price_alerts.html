@@ -3,11 +3,12 @@
 <head th:replace="fragments/header :: headerCss">
 </head>
 <body>
+<div th:class="content">
 <div th:replace="fragments/header :: header"></div>
 
-<div th:class="content" id="page-container">
-    <div id="content-wrap">
 
+        <div class="articleShort">
+            </br>
     <h4>Alerty</h4>
     <p><a th:href="@{'/alerts/new'}">Nowy alert cenowy</a></p>
     <table >
@@ -36,11 +37,12 @@
             <td><a th:href="@{'/alerts/delete/{id}'(id=${alert.getId()})}">Usuń</a></td>
         </tr>
     </table>
-    </div>
-    <footer id="footer">
-        <div th:replace="fragments/footer :: footer"></div>
+        </div>
 
-    </footer>
 </div>
+<footer id="footer">
+    <div th:replace="fragments/footer :: footer"></div>
+</footer>
+
 </body>
 </html>

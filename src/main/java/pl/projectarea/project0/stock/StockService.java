@@ -7,7 +7,8 @@ import pl.projectarea.project0.email.EmailService;
 import pl.projectarea.project0.price_alert.PriceAlert;
 import pl.projectarea.project0.price_alert.PriceAlertObserver;
 import pl.projectarea.project0.price_alert.PriceAlertRepository;
-import pl.projectarea.project0.stock_ticker.StockTickerMap;
+import pl.projectarea.project0.stock_ticker.StockTicker;
+import pl.projectarea.project0.stock_ticker.StockTickerService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -20,16 +21,25 @@ public class StockService implements PriceAlertObserver {
 
     private final PriceAlertRepository priceAlertRepository;
     private final EmailService emailService;
-    private StockTickerMap stockTickersMap;
+    private final StockTickerService stockTickerService;
     private List<PriceAlert> cachePriceAlertList = new LinkedList<>();
     private boolean isActualAlertList = false;
     private static short loopDelayCounter =0;
 
     @Autowired
-    public StockService(StockTickerMap stockTickersMap, PriceAlertRepository priceAlertRepository, EmailService emailService) {
-        this.stockTickersMap = stockTickersMap;
+    public StockService(PriceAlertRepository priceAlertRepository, EmailService emailService, StockTickerService stockTickerService) {
         this.priceAlertRepository = priceAlertRepository;
         this.emailService = emailService;
+        this.stockTickerService = stockTickerService;
+    }
+
+    public StockApiWrapper findStock(final StockTicker ticker){
+        try{
+            return StockApiWrapper.getInstance(ticker.getSymbol());
+        }catch (IOException | InterruptedException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public StockApiWrapper findStock(final String ticker){
@@ -39,10 +49,6 @@ public class StockService implements PriceAlertObserver {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public Map<String,String> loadAvailableStocksMap(){
-        return stockTickersMap.getStockTickersMap();
     }
 
     private static short startLoopDelayCounter(){
@@ -142,18 +148,18 @@ public class StockService implements PriceAlertObserver {
     }
 
     public List<StockApiWrapper> findAllStocks() {
-        return stockTickersMap.getStockTickers()
-                    .stream()
-                    .map(this::findStock)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+        return stockTickerService.getAllStockTickers()
+                .stream()
+                .map(ticker -> findStock(ticker))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     private List<StockApiWrapper> loadStocks(Set<String> tickers) {
         return tickers.stream()
-                    .map(this::findStock)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                        .map((String ticker) -> findStock(ticker))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
     }
 
     private List<PriceAlert> readPriceAlertList(){
