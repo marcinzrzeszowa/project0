@@ -23,8 +23,10 @@ public class StockService implements PriceAlertObserver {
     private final EmailService emailService;
     private final StockTickerService stockTickerService;
     private List<PriceAlert> cachePriceAlertList = new LinkedList<>();
-    private boolean isActualAlertList = false;
+    private boolean isCurrentAlertList = false;
     private static short loopDelayCounter =0;
+    private final boolean isActiveNotification = false;
+
 
     @Autowired
     public StockService(PriceAlertRepository priceAlertRepository, EmailService emailService, StockTickerService stockTickerService) {
@@ -68,7 +70,8 @@ public class StockService implements PriceAlertObserver {
     counter >= 2    - Rozpoczęcie porównywania cen rynkowych stocksList (z StockService) z cenami cachePriceAlertList
     counter >= 3    - Załadowanie ceny PriceAlert z cache i nasłuchiwanie zmian ceny z PriceAlertService (isActualAlertList = false spowoduje załadowanie cen z priceAlertRepository)
      **/
-    @Scheduled(fixedRate = 10000) //60 000 - 1min
+
+    @Scheduled(fixedRate = 300000) //60 000 - 1min
     public void priceAlertCheckLoop() throws IOException {
         short counter = startLoopDelayCounter();
         if(counter<3){
@@ -77,7 +80,7 @@ public class StockService implements PriceAlertObserver {
             cachePriceAlertList = loadPriceAlertList();
         }
         if(counter>=2){
-            showAlertsList(cachePriceAlertList);
+           // showAlertsList(cachePriceAlertList);
             Set<String> tickersSet = getDistinctTickersFromAlertList(cachePriceAlertList);
             List<StockApiWrapper> stocksList = loadStocks(tickersSet);
             comparePricesAndSentNotifications(stocksList,cachePriceAlertList);
@@ -91,7 +94,7 @@ public class StockService implements PriceAlertObserver {
 
         for(StockApiWrapper stockElement: stocksList){
             for (PriceAlert priceAlert: priceAlertsList){
-                if(stockElement.getSymbol().equals(priceAlert.getTicker())){
+                if(stockElement.getSymbol().equals(priceAlert.getTicker().getSymbol())){
                     BigDecimal stockPrice = stockElement.getPrice().setScale(3, RoundingMode.CEILING);
                     BigDecimal maxPrice = priceAlert.getMaxPrice();
                     BigDecimal minPrice = priceAlert.getMinPrice();
@@ -108,7 +111,9 @@ public class StockService implements PriceAlertObserver {
                 }
             }
         }
-        sendNotification(listOfPriceAlertsToBeSent, currentPrices);
+        if(!listOfPriceAlertsToBeSent.isEmpty() && isActiveNotification){
+            sendNotification(listOfPriceAlertsToBeSent, currentPrices);
+        }
     }
 
     private void sendNotification(List<PriceAlert> toBeSendList, Map<Long, BigDecimal> currentPrices){
@@ -124,7 +129,7 @@ public class StockService implements PriceAlertObserver {
                 };
             }
         }
-        checkPriceAlertsList();
+        setNotCurrentPriceAlertsList();
     }
 
     private void sendPriceAlertToUser(PriceAlert priceAlert, BigDecimal currentPrice){
@@ -143,7 +148,7 @@ public class StockService implements PriceAlertObserver {
 
     private void showAlertsList(List<PriceAlert> list){
         for(PriceAlert alert: list){
-                System.out.println(alert.getId() +": "+alert.getTicker() +", max: "+ alert.getMaxPrice() +" ,min: "+ alert.getMinPrice());
+                System.out.println(alert.getId() +": "+alert.getTicker() +", max: "+ alert.getMaxPrice() +" ,min: "+ alert.getMinPrice() +" ,active=: "+ alert.getActive());
         }
     }
 
@@ -164,19 +169,22 @@ public class StockService implements PriceAlertObserver {
 
     private List<PriceAlert> readPriceAlertList(){
         cachePriceAlertList = priceAlertRepository.findByIsActive(true); //findAll();
-        isActualAlertList = true;
+        isCurrentAlertList = true;
+       // System.out.println("+++++++++ readPriceAlertList()  isActualAlertList = true; ");
         return cachePriceAlertList;
      }
 
      private List<PriceAlert> loadPriceAlertList() {
-         if (!isActualAlertList) {
+         if (!isCurrentAlertList) {
              return readPriceAlertList();
          }
+        // System.out.println("+++++++++ loadPriceAlertList() from Cache");
          return cachePriceAlertList;
      }
 
     @Override
-    public void checkPriceAlertsList() {
-        isActualAlertList = false;
+    public void setNotCurrentPriceAlertsList() {
+        isCurrentAlertList = false;
+        //System.out.println("+++++++++  isCurrentAlertList = false;");
     }
 }

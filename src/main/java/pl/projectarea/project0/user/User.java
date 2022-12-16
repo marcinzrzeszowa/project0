@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @Column(name ="password")
     @NotBlank(message = "Podaj hasło")
     //@Size(min = 3, max = 50, message = "Długość hasła od 3 do 50 znaków")
-    // TODO dodac pattern
     private String password;
 
     @Column(name ="role")

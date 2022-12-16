@@ -15,7 +15,7 @@ public class StockTickerService {
     }
 
     public StockTicker findById(Long id){
-        return stockTickerRepository.findById(id).stream().findFirst().orElseThrow(()->new RuntimeException("Nie ma takiego symbolu"));
+        return stockTickerRepository.findById(id).get();
     }
 
     public List<StockTicker> getAllStockTickers(){

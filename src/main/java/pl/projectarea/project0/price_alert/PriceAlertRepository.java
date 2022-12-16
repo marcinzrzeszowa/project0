@@ -29,35 +29,4 @@ public interface PriceAlertRepository extends JpaRepository<PriceAlert, Long> {
 
     void deleteById(Long id);
 
-
-
-
-  /*
-  SELECT * FROM `project0`.`user` WHERE `id` = 1
-
-"FROM price_alert LEFT JOIN user ON price_alert.user = user.id WHERE  user_id=:id"
-
-  select g, p from Participation p
-    right outer join p.group g
-    where p.user.id=:userId
-
-    from Participation p left join p.user u where u.id =:userid
-
-    from Participation p join fetch p.group where p.user.id=:userId
-
-  @Query("from TaskGroup g join fetch g.tasks")
-    List<TaskGroup> findAll();
-
-      @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
-    boolean existsById(@Param("id") Integer id);
-
-  SELECT price_alert.id, price_alert.description, user.username FROM `price_alert` LEFT JOIN `user` ON price_alert.user = user.id
-ORDER BY `user`.`username` ASC;
-
-SELECT price_alert.id, price_alert.description, user.username FROM `price_alert` LEFT JOIN `user` ON price_alert.user = user.id
-WHERE  user.id=1
-
- @Query("select p from PriceAlert p inner join p.user ")
-    */
-
 }

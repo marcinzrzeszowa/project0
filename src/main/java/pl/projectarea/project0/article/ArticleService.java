@@ -28,7 +28,7 @@ public class ArticleService {
     //throws ResourceNotFoundException
     public Optional<Article> updateArticle(Long id, Article changedArticle) throws Exception{
         Optional<Article> article = articleRepository.findById(id);
-        if (article.isEmpty()){
+        if (article.isPresent()){
             throw new Exception();
         }
         else{
@@ -49,7 +49,7 @@ public class ArticleService {
     }
 
     public Article saveArticle(Article article) {
-        if(!article.getDescription().isBlank() && !article.getShortDescription().isBlank()){
+        if(!article.getDescription().isEmpty() && !article.getShortDescription().isEmpty()){
             articleRepository.save(article);
         }
         return article;
@@ -77,6 +77,7 @@ public class ArticleService {
     }
 
     public Article findArticle(Long articleId) {
-        return articleRepository.findById(articleId).stream().findFirst().orElse(null);
+       // return articleRepository.findById(articleId).stream().findFirst().orElse(null);
+        return articleRepository.findById(articleId).get();
     }
 }

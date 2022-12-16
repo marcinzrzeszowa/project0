@@ -22,10 +22,10 @@
                 <input type="text" th:field="*{description}"/>
             </label>
             <label>Cena maksymalna
-                <input type="number" th:field="*{maxPrice}"/>
+                <input type="number" th:text="${#numbers.formatDecimal(param.amount, 1,'COMMA', 3, 'COMMA')}" th:field="*{maxPrice}" />
             </label>
             <label>Cena minimalna
-                <input type="number" th:field="*{minPrice}"/>
+                <input type="number" th:text="${#numbers.formatDecimal(param.amount, 1,'COMMA', 3, 'COMMA')}" th:field="*{minPrice}"/>
             </label>
             <label>Alert aktywny
                 <input  type="checkbox" th:field="*{Active}"/>
@@ -36,7 +36,6 @@
             <a href="/alerts"/>Wstecz</a>
         </fieldset>
     </form>
-
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

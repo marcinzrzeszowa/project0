@@ -51,7 +51,13 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(Long id) throws UsernameNotFoundException {
-            userRepository.deleteById(id);
+        //initialization Admin ID cant be deleted
+        Long initAdminId = Long.valueOf(1);
+        if(id != initAdminId) {
+            {
+                userRepository.deleteById(id);
+            }
+        }
     }
 
     public void updateUser(User user) {
@@ -59,5 +65,9 @@ public class UserService implements UserDetailsService {
         u.setEmail(user.getEmail());
         u.setUsername(user.getUsername());
         userRepository.save(u);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

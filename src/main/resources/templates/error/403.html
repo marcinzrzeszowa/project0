@@ -4,18 +4,13 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-
-    <div class="container">
-        <p>Błąd 403</p>
-       <!-- <div class="starter-template">
-            <h1 th:text="#{error.title} + ' 403'"></h1>
-            <h3 th:text="#{error.no_access}"></h3>
-            <a href="/home" th:text="#{home.back}"></a>
-        </div>-->
+    <div class="content">
+        <div class="articleShort">
+            <h1>Błąd 403</h1>
+            <h2>Brak dostępu</h2>
+            <a href="/home">strona startowa</a>
+            </div>
     </div>
-
-
     <div th:replace="fragments/footer :: footer"></div>
 </body>
-
 </html>

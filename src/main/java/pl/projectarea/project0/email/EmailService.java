@@ -43,6 +43,7 @@ public class EmailService {
         DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
         String time = LocalTime.now().format(simpleDateFormat);
 
+        String titleMsg ="Zmiana ceny | Kurs:"+ ticker +" = "+ price;
         StringBuilder subjectMsg= new StringBuilder();
         subjectMsg.append("Czas: ").append(time).append(" | Kurs: ").append(ticker).append(" ,wynosi: ").append(price).append("\n");
         CharSequence charSequence = (maxPrice != 0 && price > maxPrice) ? subjectMsg.append("Kurs powyżej wartość: ").append(maxPrice).append("\n") : "";
@@ -60,10 +61,11 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(message,true);
             helper.setTo(email);
-            helper.setSubject(subjectMsg.toString());
+            helper.setSubject(titleMsg);
             helper.setFrom(SEND_FROM_EMAIL);
             helper.setReplyTo(SEND_REPLY_TO_EMAIL);
-            //mailSender.send(mimeMessage); //TODO Aktywowac wysyłanie emaili
+            mailSender.send(mimeMessage);
+            System.out.println("EMAIL ZOSTAŁ WYSŁANY NA ADRESS"+ email);
         }catch(MessagingException e){
             LOGGER.info("Nie można wysłać wiadomości pod adress: " + email + " uzytkownika: "+ userName, e);
             e.printStackTrace();

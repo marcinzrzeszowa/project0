@@ -6,56 +6,6 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div th:class="content">
-
-    <!--
-    My View
-
-    List<Test> test = new ArrayList<>();
-    model.addAttribute("test", test);
-    List<Test> tests = testRepository.findAll();
-    model.addAttribute("tests", tests);
-
-My HTML
-
-<div class="col-lg-3" th:object="${test}">
-    <select class="form-control" id="testOrder" name="testOrder">
-        <option value="">Select Test Order</option>
-        <option th:each="test : ${tests}"
-                th:value="${test.testCode}"
-                th:text="${test.testCode}+' : '+${test.testName}"></option>
-    </select>
-</div>
--->
-
-
-
-            <!--<select id="ticker" name="tricker">
-                <option value="">Ticker</option>
-                <option th:each="key: ${tickers.keySet()}"
-                        th:value="${key}"
-                        th:text="${tickers.get(key)}"></option>
-            </select>-->
-
-       <!-- <label th:text="#{user.gender} + '*'"></label>
-        <select th:field="*{gender}" class="form-control custom-select-lg" required title="gender">
-            <option value="HIDDEN" th:text="#{user.gender.hidden}">Hidden</option>
-            <option value="MALE" th:text="#{user.gender.male}">Male</option>
-            <option value="FEMALE" th:text="#{user.gender.female}">Female</option>
-        </select>
-
-          <option th:value="${ticker}" th:text=${tickers.get(ticker)} selected></option>
-
-<td th:text="${alert.getMaxPrice() == 0 ? ' - ' : alert.getMaxPrice()}"/>
-
-<select th:field="*{addressId}">
-    <option th:each="city : ${cities}"
-        th:value="${city.code}"
-        th:text="${city.city}">
-            Address
-    </option>
-</select>
-
--->
     <form method="post" th:object="${alertForm}">
         <fieldset>
             <label>Symbol kursu
@@ -71,12 +21,13 @@ My HTML
                 <input type="text" th:field="*{description}" name="description"/>
                 <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:class="error"></p>
             </label>
+            <!--th:text="${#numbers.formatDecimal(param.amount, 1,'COMMA', 3, 'COMMA')}"-->
             <label>Cena maksymalna
-                <input type="number" th:field="*{maxPrice}" name="maxPrice"/>
-                <p th:if="${#fields.hasErrors('description')}" th:errors="*{maxPrice}" placeholder="double" th:class="error"></p>
+                <input type="number" step="0.001" th:field="*{maxPrice}" name="maxPrice" placeholder="Górny zekres ceny"/>
+                <p th:if="${#fields.hasErrors('maxPrice')}" th:errors="*{maxPrice}" placeholder="" th:class="error"></p>
             </label>
             <label>Cena minimalna
-                <input type="number" th:field="*{minPrice}" name="minPrice" placeholder="double" />
+                <input type="number" step="0.001" th:field="*{minPrice}" name="minPrice" placeholder="Dolny zekres ceny" />
                 <p th:if="${#fields.hasErrors('minPrice')}" th:errors="*{minPrice}" th:class="error"></p>
             </label>
             <label>Alert aktywny
@@ -89,7 +40,6 @@ My HTML
             <a href="/alerts"/>Wstecz</a>
         </fieldset>
     </form>
-
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

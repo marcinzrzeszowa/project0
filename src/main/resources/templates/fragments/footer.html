@@ -3,12 +3,13 @@
 <head>
 </head>
 <body>
-<!--<div class="push"></div>-->
-<div th:fragment="footer" th:id="footer" >
-    <img th:src="@{/css/logo100.png}" class="logoFooter">
-    <p class="contentCenter">
-      © 2022 Marcin Janowski <a href="/about">Kontakt</a>
-    </p>
+
+<div th:fragment="footer" >
+    <div class="push"></div>
+    <div th:id="footer" >
+            <img th:src="@{/css/logo100w.png}" class="logoFooter" /><br>
+           © 2022 Marcin Janowski <a href="/about">Kontakt</a>
+    </div>
 </div>
 </body>
 </html>

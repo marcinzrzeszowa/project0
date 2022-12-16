@@ -22,7 +22,6 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    //TODO dodac kody HTTP RESPONSE do kontrolerow i redirect error np. 404
     @GetMapping(value = {"/","/index","/home","/articles"})
     public String showIndex(Model model){
         model.addAttribute("articles", articleService.getAllArticles());
@@ -93,7 +92,9 @@ public class ArticleController {
         Article article = articleService.findArticle(id);
         if(article!=null){
             articleService.deleteArticle(id);
+            return "redirect:/home";
+        } else {
+            return "error/404";
         }
-        return "redirect:/home";
     }
 }

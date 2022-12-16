@@ -4,9 +4,13 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div th:class="contentLeft">
-      <p th:utext="${article.getShortDescription}" />
-      <p th:utext="${article.getDescription}" />
+<div th:class="content">
+      <div class="articleShort">
+          <div class="contentLeft">
+              <p th:utext="${article.getShortDescription} " style="font-style: italic;"/>
+              <p th:utext="${article.getDescription}" />
+          </div>
+      </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

@@ -1,21 +1,54 @@
 package pl.projectarea.project0.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.projectarea.project0.price_alert.PriceAlertController;
+import pl.projectarea.project0.validator.UserValidator;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final UserValidator userValidator;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
+        this.userValidator = userValidator;
+    }
+
+    @GetMapping("/login")
+    public String login(Model model, String error){
+        if (error != null){
+            model.addAttribute("error", "Podaj poprawny Login i hasło");
+        }
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String registration(Model model) {
+        model.addAttribute("userForm", new User());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registration(@ModelAttribute("userForm") @Valid User user,
+                               BindingResult bindingResult) {
+        userValidator.validate(user,bindingResult);
+        if(bindingResult.hasErrors()){
+            logger.error(String.valueOf(bindingResult.getFieldError()));
+            return "register";
+        }
+        userService.saveUser(user);
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
@@ -33,17 +66,18 @@ public class UserController {
         User user = userService.findById(id);
         if (user != null) {
             model.addAttribute("user", user);
+            return "user";
         }else {
-            //return "error/404";
+            return "error/404";
         }
-        return "user";
     }
 
     @PostMapping("/user/{id}")
     public String editUser(@ModelAttribute("user") @Valid User user,
                            BindingResult bindingResult){
+        userValidator.validate(user,bindingResult);
         if(bindingResult.hasErrors()){
-            //return "error/404";
+            logger.error(String.valueOf(bindingResult.getFieldError()));
         }
         userService.updateUser(user);
         return "redirect:/users";
@@ -51,12 +85,11 @@ public class UserController {
 
     @GetMapping("/user/delete/{id}")
     public String deleteAlert(@PathVariable("id") Long id){
-        Long InitAdminId = Long.valueOf(1);
-        if(id != InitAdminId){
+        if(userService.findById(id) != null){
             userService.deleteUser(id);
+            return "redirect:/users";
+        }else {
+            return "error/404";
         }
-        return "redirect:/users";
     }
-
-
 }

@@ -3,13 +3,14 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head th:fragment="headerCss">
+    <title>Project Area-Strona poświęcona tematyce programowania</title>
     <meta charset="UTF-8">
+    <meta name = "keywords" content = "Java, programowanie, projekty" />
+    <meta name = "description" content = "Strona poświęcona tematyce programowania" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
-
 <body>
-
 <div th:fragment="header"  class="headerMenu" >
     <div th:class="contentCenter">
     <nav class="menu-container">
@@ -18,23 +19,18 @@
         <span></span>
         <span></span>
         <span></span>
-
-        <!-- logo -->
         <a th:href="@{/home}" class="menu-logo">
             <img th:src="@{/css/logo100w.png}" />
         </a>
-
-        <!-- menu items -->
         <div class="menu">
             <ul>
                 <li>
-
             </li>
                 <li>
                     <a th:href="@{/home}">Start</a>
                 </li>
                 <li>
-                    <a th:href="@{/stocks}">Kursy</a>
+                    <a th:href="@{/stocks}">Notowania giełdowe</a>
                 </li>
                 <li>
                     <a th:href="@{/alerts}"  sec:authorize="isAuthenticated()">Alerty</a>

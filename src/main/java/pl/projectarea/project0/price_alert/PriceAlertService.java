@@ -24,7 +24,7 @@ public class PriceAlertService implements PriceAlertObservable{
     }
 
     public PriceAlert findById(Long id){
-        return priceAlertRepository.findById(id).stream().findFirst().orElseThrow(()->new RuntimeException("Nie ma alertu o takim ID"));
+        return priceAlertRepository.findById(id).get();
     }
     public List<PriceAlert> readAllPriceAlerts(){
         return priceAlertRepository.findAll();
@@ -70,8 +70,7 @@ public class PriceAlertService implements PriceAlertObservable{
 
     @Override
     public void notifyChangeInPriceAlertsList(PriceAlertObserver observer) {
-        observer.checkPriceAlertsList();
+        observer.setNotCurrentPriceAlertsList();
     }
-
 
 }

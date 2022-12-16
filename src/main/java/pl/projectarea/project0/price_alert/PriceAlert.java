@@ -1,5 +1,6 @@
 package pl.projectarea.project0.price_alert;
 
+import org.springframework.format.annotation.NumberFormat;
 import pl.projectarea.project0.stock_ticker.StockTicker;
 import pl.projectarea.project0.user.User;
 
@@ -21,18 +22,18 @@ public class PriceAlert {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 100)
     @NotBlank(message = "Podaj opis")
     private String description;
 
-    @Column(name = "max_price", length = 100000, precision = 10, scale = 3)
-    @Min(value=0, message="Cena maksymalna jest za mała")
-    @Max(value=100000, message="Cena maksymalna jest za duża")  //TODO sprawdzic dlugosc jaka ma byc z precyzja, DoDac cena max > cena min validator,
+    @Column(name = "max_price", precision = 10, scale = 3)
+    /*@Min(value=0, message="Cena maksymalna jest za mała")
+    @Max(value=100000, message="Cena maksymalna jest za duża !!!!!!!!!!!!!!")*/
     private BigDecimal maxPrice;
 
-    @Column(name = "min_price", length = 100000, precision = 10, scale = 3)
-    @Min(value=0, message="Cena minimalna jest za mała")
-    @Max(value=1000000, message="Cena minimalna jest za duża")
+    @Column(name = "min_price", precision = 10, scale = 3)
+   /* @Min(value=0, message="Cena minimalna jest za mała")
+    @Max(value=1000000, message="Cena minimalna jest za duża")*/
     private BigDecimal minPrice;
 
     @Column(name = "is_active")

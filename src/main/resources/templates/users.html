@@ -8,7 +8,7 @@
         <div th:replace="fragments/header :: header"></div>
         <div th:class="content">
             <div class="articleShort">
-                </br>
+
                 <h4>Użytkowicy</h4>
                 <br/>
             <a sec:authorize="hasRole('ADMIN')" th:href="@{/register}">Dodaj Użytkownika</a>

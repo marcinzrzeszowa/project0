@@ -101,8 +101,10 @@ public class PriceAlertController {
         PriceAlert alert = priceAlertService.findById(id);
         if(alert!=null){
             priceAlertService.deletePriceAlert(id);
+            return "redirect:/alerts";
+        } else {
+            return "error/404";
         }
-        return "redirect:/alerts";
     }
 }
 
